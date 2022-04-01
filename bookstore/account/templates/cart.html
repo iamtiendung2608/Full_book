@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+<h1>A Fancy Table</h1>
+
+<table id="customers">
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Count</th>
+  </tr>
+  {% for item in items %}
+  <tr>
+    <td>{{item.name}}</td>
+    <td>{{item.price}}$</td>
+    <td>1</td>
+  </tr>
+  {% endfor %}
+  <tr style="background-color: Yellow">
+    <td>Total</td>
+    <td>{{TotalPrice}}$</td>
+    <td>{{TotalCount}}</td>
+  </tr>
+</table>
+
+
+
+{% endblock content %}
+
+
+
+
+

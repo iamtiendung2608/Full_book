@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row clearfix">
+        {% for item  in  contexts%}
+        <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="card product_item">
+                <div class="body">
+                    <div class="cp_img">
+                        <img src="{{item.image}}" alt="Product" class="img-fluid">
+                        <div class="hover">
+                            <a href="javascript:void(0);" class="btn btn-primary btn-sm waves-effect"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                            <a href="{% url 'add' item.id %}" class="btn btn-primary btn-sm waves-effect"><i class="fa fa-cart-plus" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                    <div class="product_details">
+                        <h5><a href="product/{{item.id}}">{{item.name}}</a></h5>
+                        <ul class="product_price list-unstyled">
+                            <li class="new_price">{{item.price}}$</li>
+                            <div class = "row" >
+                                {% for i in item.tag.all %}
+                                    <li class="col-md-9" ><a style="font-size: 15px" href="tag/{{i.id}}">#{{i}}</a></li>
+                                {% endfor %}
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
+
+
