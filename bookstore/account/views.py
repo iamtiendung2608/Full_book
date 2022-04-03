@@ -60,5 +60,9 @@ def Cart(request):
         'items': items,
         'TotalPrice': TotalPrice,
         'TotalCount': TotalCount
-
     })
+@login_required(login_url='login')
+@allowed_users(allowed_role=['customer'])
+def UserProfile(request):
+    contexts = {}
+    return render(request,'profile.html',contexts)

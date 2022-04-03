@@ -10,11 +10,18 @@ from django.shortcuts import redirect
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
 def homepage(request):
+    if request.method == 'POST':
+        name = request.POST.get('kw')
+        print(name)
+        context = book.objects.filter(name__contains = name)
+    else:
+        context = book.objects.all()
     order = Order.objects.filter(account = request.user).values('book_id')
     TotalCount = book.objects.filter(id__in = order).count()
-    context = book.objects.all()
+    
     return render(request,'home.html',{
-        'contexts': context
+        'contexts': context,
+        'count':TotalCount,
     })
 
 
