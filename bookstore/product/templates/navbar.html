@@ -22,10 +22,10 @@
     <li id="menu-item-18" class="menu-item menu-item-type-custom menu-item-object-custom  menu-item-301"><a href="#">account</a>
     <ul class="sub-menu">
       <!--check if user login-->
-        <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="{% url 'accounts' %}">{{request.user.username}}</a></li>
+        <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="{% url 'profile' %}">{{request.user.username}}</a></li>
         <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="account/cart">cart   {{count}}</a></li>
+        <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="{% url 'checkout' %}">Check out</a></li>
         <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="{% url 'logout' %}">logout</a></li>
-    
     </ul>
     </li>
     </ul>        </div>

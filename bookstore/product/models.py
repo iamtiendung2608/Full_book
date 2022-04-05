@@ -1,6 +1,7 @@
 from pydoc import describe
 from django.db import models
 from account.form import CreateUserFrom
+from account.models import UserDetails
 from django.contrib.auth.models import User
 class tag(models.Model):
     name = models.CharField(max_length = 20)
@@ -24,3 +25,8 @@ class Order(models.Model):
     account = models.ForeignKey(User, null=True,on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True,null=True)
 
+class favor(models.Model):
+    #wrong in cascade
+    user = models.OneToOneField(UserDetails,on_delete=models.CASCADE,blank=True,null=True)
+    tag = models.ManyToManyField(tag)
+    
