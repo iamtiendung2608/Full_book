@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class UserDetails(models.Model):
     user = models.OneToOneField(User,null=True,on_delete=models.CASCADE,blank=True)
+    profile_pic = models.ImageField(null=True, blank=True)
     GENDER_CHOICES = (
         ('MALE' , 'male'),
         ("FEMALE",'female')

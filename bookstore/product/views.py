@@ -24,7 +24,6 @@ def homepage(request):
         'count':TotalCount,
     })
 
-
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
 def details(request, id = None):
@@ -39,4 +38,12 @@ def addToCart(request,id=None):
     order = Order(book=item, account=account)
     order.save()
     return redirect('home')
+@login_required(login_url='login')
+@allowed_users(allowed_role=['customer'])
+def TagDetails(request, id = None):
+    items = book.objects.filter(tag__id = id)
+    return render(request,'home.html',{
+        'contexts': items,
+    })
+
     

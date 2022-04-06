@@ -4,4 +4,4 @@ from .models import tag, book,Order,favor
 admin.site.register(book)
 admin.site.register(tag)
 admin.site.register(Order)
-admin.site.register(favor)
+admin.site.register(favor)                                                                                                                                                                                                                                     

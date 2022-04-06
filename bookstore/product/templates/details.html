@@ -1,37 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% load static %}
+<link href = "{% static 'details.css' %}">
+<div class="container">
+    <div class="row list-project">
+        <div class="col-md-7">
+            <img src="{{context.image}}" alt="project-image" class="rounded tablet-top">
+            <div class="project-info-box mt-0 des">
+              <h3>Description</h3>
+              <hr>
+              <p class="des">{{context.describe}}</p>
+          </div>
+          </div>
+        <!-- / column -->
+        <div class="col-md-5" style="padding-top: 100px">
+            <div class="project-info-box mt-0">
+                <h5>{{context.name}}</h5>
+            </div>
+            <!-- / project-info-box -->
+            <div class="project-info-box mb-10">
+                <p><b>Author:   </b> {{context.author}}</p>
+                <p><b>Price:     </b>{{context.price}}$</p>
+                <p><b>Attitute:     </b>
+                    {% for tag in context.tag.all %}
+                        #{{tag}}
+                    {% endfor %}
+                </p>
 
-<div class = "main-wrapper">
-    <div class = "container">
-        <div class = "product-div">
-            <div class = "product-div-left">
-                <div class = "img-container">
-                    <img src = "{{context.image}}" alt = "watch">
-                </div>
             </div>
-            <div class = "product-div-right">
-                <span class = "product-name">{{context.name}}</span>
-                <span class = "product-price">{{context.price}}$</span>
-                <div class = "product-rating">
-                    <span><i class = "fas fa-star"></i></span>
-                    <span><i class = "fas fa-star"></i></span>
-                    <span><i class = "fas fa-star"></i></span>
-                    <span><i class = "fas fa-star"></i></span>
-                    <span><i class = "fas fa-star-half-alt"></i></span>
-                    <span>(350 ratings)</span>
-                </div>
-                <p class = "product-description">{{context.describe}}</p>
-                <div class = "btn-groups">
-                    <button type = "button" class = "add-cart-btn"><i class = "fas fa-shopping-cart"></i>add to cart</button>
-                    <button type = "button" class = "buy-now-btn"><i class = "fas fa-wallet"></i>buy now</button>
-                </div>
-            </div>
+            <!-- / project-info-box -->
+            <a style="margin-top: 100px" href="{% url 'add' context.id %}" class="btn btn-primary d-block">Build Now</a>
         </div>
+        <!-- / column -->
     </div>
-</div>
-
-
 {% endblock content %}
 
 

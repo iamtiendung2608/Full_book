@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container">
+<div class="container" style = "padding-top: 70px;">
     <div class="row clearfix">
         {% for item  in  contexts%}
         <div class="col-lg-3 col-md-4 col-sm-12">
@@ -9,8 +9,8 @@
                     <div class="cp_img">
                         <img src="{{item.image}}" alt="Product" class="img-fluid">
                         <div class="hover">
-                            <a href="javascript:void(0);" class="btn btn-primary btn-sm waves-effect"><i class="fa fa-plus" aria-hidden="true"></i></a>
-                            <a href="{% url 'add' item.id %}" class="btn btn-primary btn-sm waves-effect"><i class="fa fa-cart-plus" aria-hidden="true"></i></a>
+                            <a href="product/{{item.id}}" class="btn btn-primary btn-sm waves-effect"><i class="fa fa-info" aria-hidden="true"></i></a>
+                            <a href="{% url 'add' item.id %}"  class="btn btn-primary btn-sm waves-effect"><i class="fa fa-cart-plus" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <div class="product_details">
@@ -19,7 +19,7 @@
                             <li class="new_price">{{item.price}}$</li>
                             <div class = "row" >
                                 {% for i in item.tag.all %}
-                                    <li class="col-md-9" ><a style="font-size: 15px" href="tag/{{i.id}}">#{{i}}</a></li>
+                                    <li ><a style="font-size: 15px" href="tag/{{i.id}}">#{{i}}</a></li>
                                 {% endfor %}
                             </div>
                         </ul>
@@ -30,6 +30,7 @@
         {% endfor %}
     </div>
 </div>
+
 {% endblock content %}
 
 
