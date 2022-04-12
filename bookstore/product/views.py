@@ -7,8 +7,6 @@ from django.shortcuts import redirect
 
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_role=['customer'])
 def homepage(request):
     if request.method == 'POST':
         name = request.POST.get('kw')
@@ -16,16 +14,15 @@ def homepage(request):
         context = book.objects.filter(name__contains = name)
     else:
         context = book.objects.all()
+    if not request.user.is_authenticated:
+        return render(request,'home.html',{'contexts': context,})
     order = Order.objects.filter(account = request.user).values('book_id')
     TotalCount = book.objects.filter(id__in = order).count()
-    
     return render(request,'home.html',{
         'contexts': context,
         'count':TotalCount,
     })
 
-@login_required(login_url='login')
-@allowed_users(allowed_role=['customer'])
 def details(request, id = None):
     context = book.objects.get(id=id)
     return render(request,'details.html',{'context': context})
@@ -38,8 +35,8 @@ def addToCart(request,id=None):
     order = Order(book=item, account=account)
     order.save()
     return redirect('home')
-@login_required(login_url='login')
-@allowed_users(allowed_role=['customer'])
+
+
 def TagDetails(request, id = None):
     items = book.objects.filter(tag__id = id)
     return render(request,'home.html',{
