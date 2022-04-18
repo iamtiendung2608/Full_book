@@ -5,6 +5,5 @@ urlpatterns = [
     path('regist',registPage,name='regist'),
     path('logout',logoutUser,name='logout'),
     path('cart',Cart,name='cart'),
-    path('',CheckOut,name='checkout'),
     path('details',UserProfile,name='profile'),
 ]

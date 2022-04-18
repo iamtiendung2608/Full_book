@@ -14,7 +14,6 @@ from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-import os
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -27,7 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bookstore.settings')
 # Application definition
 
 INSTALLED_APPS = [

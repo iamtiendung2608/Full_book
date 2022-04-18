@@ -1,10 +1,11 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from account.decorators import allowed_users
 from .models import tag, book, Order
 from django.shortcuts import redirect
-
+from .forms import BookForm
 
 
 def homepage(request):
@@ -43,4 +44,39 @@ def TagDetails(request, id = None):
         'contexts': items,
     })
 
-    
+@login_required(login_url='login')
+@allowed_users(allowed_role=['admin'])
+def AddBook(request):
+    if request.method == 'POST' :
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = BookForm()
+    return render(request, 'edit.html',{'form':form})
+
+@login_required(login_url='login')
+@allowed_users(allowed_role=['admin'])
+def EditBook(request, id = None):
+    book = book.objects.filter(id=id)
+    if request.method == 'POST':
+        form = BookForm(request.POST,instance=book)
+        if form.is_valid:
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = BookForm(instance = book)
+    return render(request, 'edit.html',{'form':form})
+
+@login_required(login_url='login')
+@allowed_users(allowed_role=['admin'])
+def DeleteBook(request, id = None):
+    book = book.objects.get(id=id).delete()
+    return HttpResponseRedirect('/')
+
+@login_required(login_url='login')
+@allowed_users(allowed_role=['admin'])
+def CheckOut(request):
+    contexts = {}
+    return render(request,'profile.html',contexts)

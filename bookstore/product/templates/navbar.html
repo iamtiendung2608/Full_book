@@ -1,3 +1,4 @@
+{% load custom_tags %}
 <body class="home page-template page-template-tpl-home page-template-tpl-home-php page page-id-8">
   <header id="header" class="header">
     <div class="wrapper wrapper__lg">
@@ -11,34 +12,37 @@
   <li  class="menu-item-109"><a target="_blank" rel="noopener noreferrer" href="">Tin tức</a>
   <ul class="sub-menu">
       <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/channel/UCrCqu1n0H52uGETAoSmgNdQ">Kênh Youtube</a></li>
-  </ul>
+  
+    </ul>
   </li>
   <li id="menu-item-18" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item-18"><a target="_blank" rel="noopener noreferrer" href="https://fo4.garena.vn/hoc-vien/">account</a>
-  <ul class="sub-menu">
+    <li id="menu-item-18" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item-18"><a target="_blank" rel="noopener noreferrer" href="https://fo4.garena.vn/hoc-vien/">account</a>
+  
+    <ul class="sub-menu">
       <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/channel/UCrCqu1n0H52uGETAoSmgNdQ">Logout</a></li>
   
   </ul>
   </li>
-  <li id="menu-item-18" class="menu-item menu-item-type-custom menu-item-object-custom  menu-item-301"><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a>
+  <li id="menu-item-18" class="menu-item menu-item-type-custom menu-item-object-custom  menu-item-301"><a href="#"><i class="fa fa-list" aria-hidden="true"></i></a>
   <ul class="sub-menu">
     <!--check if user login-->
     {% if request.user.is_authenticated %}
-    
-      <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="{% url 'profile' %}">{{request.user.username}}</a></li>
+      {% if request.user|has_group:"admin" %}
+          <li id="menu-item-18" class="menu-item menu-item-type-custom menu-item-object-custom  menu-item-301"><a href="{% url 'checkout' %}"><i class="fa fa-line-chart" aria-hidden="true"></i> Checkout</a>
+          <li id="menu-item-18" class="menu-item menu-item-type-custom menu-item-object-custom  menu-item-301"><a href="{% url 'adminAdd' %}"><i class="fa fa-plus" aria-hidden="true">  Add Product</i></a>
+        {% else %}
+        <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="{% url 'profile' %}"><i class="fa fa-user" aria-hidden="true"></i>   {{request.user.username}}</a></li>
+        <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="account/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i>   cart   {{count}}</a></li>
       {% endif %}
-      <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="{% url 'profile' %}">Edit Profile</a></li>
 
-      <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="account/cart">cart   {{count}}</a></li>
-      <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="{% url 'checkout' %}">Check out</a></li>
-      {% if request.user.is_authenticated %}
-      <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="{% url 'logout' %}">logout</a></li>
-      
-      {% else %}
-      <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="{% url 'login' %}">login</a></li>
-
-      {% endif %}
+    {% endif %}
   </ul>
   </li>
+    {% if request.user.is_authenticated %}
+            <li id="menu-item-26" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+    {% else %}
+            <li id="menu-item-18" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-299"><a target="_blank" rel="noopener noreferrer" href="{% url 'login' %}"><i class="fa fa-sign-in" aria-hidden="true"></i></a></li>
+    {% endif %}
   </ul>        </div>
           <div class="header__menu--right">
             <div class="header__search">
@@ -53,7 +57,8 @@
                 />
               </form>
             </div>
-  </ul>        </div>
+          </ul>       
+        </div>
         </div>
         
       </div>

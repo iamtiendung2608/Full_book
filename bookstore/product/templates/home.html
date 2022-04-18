@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_tags %}
 {% block content %}
 <div class="container" style = "padding-top: 70px;">
     <div class="row clearfix">
@@ -9,8 +10,15 @@
                     <div class="cp_img">
                         <img src="{{item.image}}" alt="Product" class="img-fluid">
                         <div class="hover">
-                            <a href="product/{{item.id}}" class="btn btn-primary btn-sm waves-effect"><i class="fa fa-info" aria-hidden="true"></i></a>
-                            <a href="{% url 'add' item.id %}"  class="btn btn-primary btn-sm waves-effect"><i class="fa fa-cart-plus" aria-hidden="true"></i></a>
+                            {% if request.user.is_authenticated %}
+                            {% if request.user|has_group:"admin" %}
+                                <a href="{% url 'adminEdit' %}" class="btn btn-primary btn-sm waves-effect"><i class="fa fa-minus" aria-hidden="true"></i></i></i></a>
+                                <a href="{% url 'adminDelete' %}" class="btn btn-primary btn-sm waves-effect"><i class="fa fa-pencil" aria-hidden="true"></i></i></i></a>
+                            {% else %}
+                                <a href="product/{{item.id}}" class="btn btn-primary btn-sm waves-effect"><i class="fa fa-info" aria-hidden="true"></i></a>
+                                <a href="{% url 'add' item.id %}"  class="btn btn-primary btn-sm waves-effect"><i class="fa fa-cart-plus" aria-hidden="true"></i></a>
+                            {% endif %}
+                            {% endif %}
                         </div>
                     </div>
                     <div class="product_details">
