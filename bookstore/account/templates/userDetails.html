@@ -1,34 +1,51 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
+{% extends "base.html" %} {% load static %} {% block content %}
 <style>
-	.profile-pic{
-		max-width: 200px;
-		max-height:200px;
-		margin: 0 auto;
-		border-radius: 50%;
-	}
+  .profile-pic {
+    max-width: 200px;
+    max-height: 200px;
+    margin: 0 auto;
+    border-radius: 50%;
+  }
 </style>
 
-<br>
-<div class="row">
-	<div class="col-md-3">
-		<div class="card card-body">
-			<a class="btn btn-warning" href="{% url 'home' %}"> &#8592; Back to Home</a>
-			<hr>
-			<h3 style="text-align: center">Account Settings</h3>
-			<img class="profile-pic" src="{{request.uset.UserDetails.profile_pic.url}}">
-			<hr>
-		</div>
-	</div>
-	<div class="col-md-9">
-		<div class="card card-body">
-			<form method="POST" action="" >
-				{% csrf_token %}
-				{{form.as_p}}
-			<input class="btn btn-primary" type="submit" name="Submit">
-			</form>
-		</div>
-	</div>
-</div>
+<body onload="Unable()">
+  <br />
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card card-body">
+        <a class="btn btn-warning" href="{% url 'home' %}">
+          &#8592; Back to Home</a
+        >
+        <hr />
+        <h3 style="text-align: center">Account Settings</h3>
+        <img
+          class="profile-pic"
+          src="{{request.uset.UserDetails.profile_pic.url}}"
+        />
+        <hr />
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="card card-body">
+        <form method="POST" action="" id="target">
+          {% csrf_token %} {{form.as_p}}
+          <input
+            class="btn btn-primary"
+            type="submit"
+            name="Submit"
+          />
+          <input
+            onclick="Enable()"
+            class="btn btn-info"
+            type="button"
+            value="Edit"
+            name="Edit"
+            id="btn_edit"
+
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
 {% endblock content %}

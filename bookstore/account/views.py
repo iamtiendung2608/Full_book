@@ -12,7 +12,7 @@ from .decorators import allowed_users
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.contrib.auth.models import User
-
+from .models import UserDetails
 # Create your views here.
 @unauthenticated_user
 def registPage(request,template='account/templates'):
@@ -65,14 +65,12 @@ def Cart(request):
     })
 
 
-
-
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
-def UserProfile(request):
+def UserProfile(request,id=None):
     if request.method == 'POST':
         form = DetailsForm(request.POST)
-        if form.is_valid():
+        if form.is_valid() :
             your_object = form.save(commit=False)
             your_object.user = request.user
             your_object.save()
@@ -83,5 +81,4 @@ def UserProfile(request):
     form = DetailsForm()
     return render(request,'userDetails.html',{'form':form})
 
-
-        
+    

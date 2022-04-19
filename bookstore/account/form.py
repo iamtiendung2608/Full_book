@@ -17,4 +17,4 @@ class DetailsForm(ModelForm):
     class Meta:
         model = UserDetails
         fields = '__all__'
-        exclude = ['user']
+        exclude = ['user']  
