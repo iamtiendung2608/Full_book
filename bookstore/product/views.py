@@ -59,20 +59,20 @@ def AddBook(request):
 @login_required(login_url='login')
 @allowed_users(allowed_role=['admin'])
 def EditBook(request, id = None):
-    book = book.objects.filter(id=id)
+    item = book.objects.get(id=id)
     if request.method == 'POST':
-        form = BookForm(request.POST,instance=book)
+        form = BookForm(request.POST,instance = item)
         if form.is_valid:
             form.save()
             return HttpResponseRedirect('/')
     else:
-        form = BookForm(instance = book)
+        form = BookForm(instance = item)
     return render(request, 'edit.html',{'form':form})
 
 @login_required(login_url='login')
 @allowed_users(allowed_role=['admin'])
 def DeleteBook(request, id = None):
-    book = book.objects.get(id=id).delete()
+    item = book.objects.get(id=id).delete()
     return HttpResponseRedirect('/')
 
 @login_required(login_url='login')

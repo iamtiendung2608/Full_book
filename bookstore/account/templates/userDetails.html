@@ -20,14 +20,14 @@
         <h3 style="text-align: center">Account Settings</h3>
         <img
           class="profile-pic"
-          src="{{request.uset.UserDetails.profile_pic.url}}"
+          src="{{pic.url}}"
         />
         <hr />
       </div>
     </div>
     <div class="col-md-9">
       <div class="card card-body">
-        <form method="POST" action="" id="target">
+        <form enctype="multipart/form-data" method="POST" action="" id="target">
           {% csrf_token %} {{form.as_p}}
           <input
             class="btn btn-primary"

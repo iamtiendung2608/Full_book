@@ -17,7 +17,6 @@ from .models import UserDetails
 @unauthenticated_user
 def registPage(request,template='account/templates'):
     
-    form = CreateUserFrom()
     if request.method == 'POST':
         form = CreateUserFrom(request.POST)
         if form.is_valid():
@@ -30,6 +29,7 @@ def registPage(request,template='account/templates'):
         else:
             messages.error(request,form.error_messages)
             return redirect('regist')
+    form = CreateUserFrom()
     context = {'form':form}
     return render(request,'regist.html',context)
 
@@ -67,18 +67,20 @@ def Cart(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
-def UserProfile(request,id=None):
+def UserProfile(request):
+    details = UserDetails.objects.get(user = request.user)
     if request.method == 'POST':
-        form = DetailsForm(request.POST)
-        if form.is_valid() :
-            your_object = form.save(commit=False)
-            your_object.user = request.user
-            your_object.save()
-            return redirect('home')
+        form = DetailsForm(request.POST,request.FILES, instance = details)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
         else:
             print(form.errors.as_data())
             return redirect('userDetails')
-    form = DetailsForm()
-    return render(request,'userDetails.html',{'form':form})
+    form = DetailsForm(instance = details)
+    return render(request,'userDetails.html',{
+        'form':form,
+        'pic':details.profile_pic
+        })
 
     

@@ -4,7 +4,7 @@ from django.forms import ModelForm
 from django import forms
 from .models import UserDetails
 class CreateUserFrom(UserCreationForm):
-    class Meta:
+    class Meta: 
         model = User
         fields = ['username','password1','password2']
 class DetailsForm(ModelForm):
@@ -17,4 +17,4 @@ class DetailsForm(ModelForm):
     class Meta:
         model = UserDetails
         fields = '__all__'
-        exclude = ['user']  
+        exclude = ['user']
