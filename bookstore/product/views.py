@@ -9,11 +9,14 @@ from .forms import BookForm
 
 
 def homepage(request):
+    '''if search button are hit Post Search form'''
     if request.method == 'POST':
+        '''get value through name 'kw' from request'''
         name = request.POST.get('kw')
-        print(name)
+        '''__contains indicated that book's name must contain search value'''
         context = book.objects.filter(name__contains = name)
     else:
+        '''normal load page get all the book'''
         context = book.objects.all()
     if not request.user.is_authenticated:
         return render(request,'home.html',{'contexts': context,})

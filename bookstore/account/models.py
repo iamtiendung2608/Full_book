@@ -18,3 +18,12 @@ class UserDetails(models.Model):
     def save(self,*args, **kwargs):
         super(UserDetails, self).save(*args, **kwargs)
 
+class address(models.Model):
+    user = models.OneToOneField(User,null=True,on_delete=models.CASCADE,blank=True)
+    Province =models.CharField(max_length =30,null=True)
+    City = models.CharField(max_length=30, null=True)
+    District = models.CharField(max_length =30,null=True)
+    Ward = models.CharField(max_length =30, null=True)
+    Details = models.TextField(null=True)
+    def __str__(self):
+        return self.user.username +' Address'

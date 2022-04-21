@@ -82,5 +82,8 @@ def UserProfile(request):
         'form':form,
         'pic':details.profile_pic
         })
-
+@login_required(login_url='login')
+@allowed_users(allowed_role=['customer'])
+def CartDelete(request, id = None):
+     pass
     

@@ -9,12 +9,19 @@
     <th>Name</th>
     <th>Price</th>
     <th>Count</th>
+    <th>Option</th>
   </tr>
   {% for item in items %}
   <tr>
     <td>{{item.name}}</td>
     <td>{{item.price}}$</td>
     <td>1</td>
+    <td>
+      <a href="{% url 'deleteItem'  %}" type="button" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i>
+      </a>
+      <a href="" type="button" class="btn btn-danger"><i class="fa fa-minus" aria-hidden="true"></i>
+      </a>
+    </td>
   </tr>
   {% endfor %}
   <tr style="background-color: Yellow">
