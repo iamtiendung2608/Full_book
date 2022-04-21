@@ -44,7 +44,7 @@ def loginPage(request,template='account/templates'):
             return redirect('home')
         else:
             messages.info(request,'username or password is incorrect')
-            return redirect('home')
+            return redirect('login')
     return render(request,'login.html')
 
 def logoutUser(request):
@@ -54,16 +54,16 @@ def logoutUser(request):
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
 def Cart(request):
-    order = Order.objects.filter(account = request.user).values('book_id')
-    items = book.objects.filter(id__in = order)
-    TotalCount = items.count()
-    TotalPrice = items.aggregate(Sum('price'))['price__sum']
+    # order = Order.objects.filter(account = request.user).values('book_id')
+    # items = book.objects.filter(id__in = order)
+    # TotalCount = items.count()
+    # TotalPrice = items.aggregate(Sum('price'))['price__sum']
+    items = Order.objects.filter(account = request.user)
     return render(request, 'cart.html',{
         'items': items,
-        'TotalPrice': TotalPrice,
-        'TotalCount': TotalCount
+        # 'TotalPrice': TotalPrice,
+        # 'TotalCount': TotalCount
     })
-
 
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])

@@ -23,8 +23,9 @@ class book(models.Model):
 class Order(models.Model):
     book = models.ForeignKey(book, null=True,on_delete=models.CASCADE)
     account = models.ForeignKey(User, null=True,on_delete=models.CASCADE)
-    #quantity = models.DecimalField(default = 1)
+    quantity = models.DecimalField(default = 1,max_digits =5, decimal_places=0)
     date_created = models.DateTimeField(auto_now_add=True,null=True)
+
 
 class favor(models.Model):
     #wrong in cascade

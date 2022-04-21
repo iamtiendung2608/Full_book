@@ -6,7 +6,7 @@ from account.decorators import allowed_users
 from .models import tag, book, Order
 from django.shortcuts import redirect
 from .forms import BookForm
-
+from django.db.models import F
 
 def homepage(request):
     '''if search button are hit Post Search form'''
@@ -35,9 +35,13 @@ def details(request, id = None):
 @allowed_users(allowed_role=['customer'])
 def addToCart(request,id=None):
     item = book.objects.get(id=id)
-    account = request.user
-    order = Order(book=item, account=account)
-    order.save()
+    owner = request.user
+    order = Order.objects.filter(account = owner,book=item)
+    if order:
+        order.update(quantity = F('quantity')+1)
+    else:
+        print('here')
+        Order.objects.create(account = owner,book=item)
     return redirect('home')
 
 
