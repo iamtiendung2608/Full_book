@@ -31,4 +31,3 @@ class favor(models.Model):
     #wrong in cascade
     user = models.OneToOneField(UserDetails,on_delete=models.CASCADE,blank=True,null=True)
     tag = models.ManyToManyField(tag)
-    

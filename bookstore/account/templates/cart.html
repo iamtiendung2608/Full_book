@@ -17,9 +17,9 @@
     <td>{{item.book.price}}$</td>
     <td>{{item.quantity}}</td>
     <td>
-      <a href="#" type="button" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i>
+      <a href="{% url 'moreItems' item.id %}" type="button" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i>
       </a>
-      <a href="#" type="button" class="btn btn-danger"><i class="fa fa-minus" aria-hidden="true"></i>
+      <a href="{% url 'deleteItem' item.id %}" type="button" class="btn btn-danger"><i class="fa fa-minus" aria-hidden="true"></i>
       </a>
     </td>
   </tr>

@@ -31,6 +31,9 @@ def details(request, id = None):
     context = book.objects.get(id=id)
     return render(request,'details.html',{'context': context})
 
+
+
+
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
 def addToCart(request,id=None):

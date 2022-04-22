@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.contrib.auth.models import User
 from .models import UserDetails
+from django.db.models import F
 # Create your views here.
 @unauthenticated_user
 def registPage(request,template='account/templates'):
@@ -64,6 +65,24 @@ def Cart(request):
         # 'TotalPrice': TotalPrice,
         # 'TotalCount': TotalCount
     })
+
+@login_required(login_url='login')
+@allowed_users(allowed_role=['customer'])
+def MoreItems(request, id = None):
+    order = Order.objects.filter(id=id)
+    order.update(quantity = F('quantity')+1)
+    return redirect('cart')
+
+@login_required(login_url='login')
+@allowed_users(allowed_role=['customer'])
+def RemoveItems(request, id = None):
+    order = Order.objects.filter(id=id)
+    if(order.values().quantity==1):
+        order.delete()
+    else:
+        order.update(quantity = F('quantity')-1)
+    return redirect('cart')
+
 
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
