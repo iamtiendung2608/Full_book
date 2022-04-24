@@ -17,7 +17,6 @@ from django.db.models import F
 # Create your views here.
 @unauthenticated_user
 def registPage(request,template='account/templates'):
-    
     if request.method == 'POST':
         form = CreateUserFrom(request.POST)
         if form.is_valid():
@@ -104,5 +103,5 @@ def UserProfile(request):
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
 def CartDelete(request, id = None):
-     pass
+    pass
     

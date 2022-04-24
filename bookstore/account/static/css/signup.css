@@ -1,0 +1,23 @@
+body{
+    margin-top:20px;
+    background-color: #f2f3f8;
+    background-image: url("https://assets.brightspot.abebooks.a2z.com/dims4/default/ecfe987/2147483647/strip/true/crop/1580x760+0+0/resize/1996x960!/format/webp/quality/90/?url=http%3A%2F%2Fabebooks-brightspot.s3.amazonaws.com%2F51%2Ff3%2F51bdbb934c0fbd0e21584f2a1800%2Fteen-books.png");
+}
+.card {
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 15px 1px rgba(52,40,104,.08);
+}
+
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #e5e9f2;
+    border-radius: .2rem;
+}
