@@ -3,10 +3,11 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from account.decorators import allowed_users
-from .models import tag, book, Order
+from .models import tag, book, Order,Bill
 from django.shortcuts import redirect
 from .forms import BookForm
 from django.db.models import F
+from account.form import AddressDetails
 
 def homepage(request):
     '''if search button are hit Post Search form'''
@@ -30,7 +31,6 @@ def homepage(request):
 def details(request, id = None):
     context = book.objects.get(id=id)
     return render(request,'details.html',{'context': context})
-
 
 
 
@@ -90,3 +90,20 @@ def DeleteBook(request, id = None):
 def CheckOut(request):
     contexts = {}
     return render(request,'profile.html',contexts)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_role=['customer'])
+def AddToBill(request):
+    if request.method == 'POST':
+        address = AddressDetails(request.POST)
+        if address.is_valid():
+            address.save()
+            CurrentBill = Bill.objects.create(user = request.user, delivery = address)
+            Order.objects.filter(account = request.user).update(bill = CurrentBill)
+            return redirect('home')
+    else:
+        form = AddressDetails()
+        return render(request,'BillDetails.html',{'form':form})
+
+
