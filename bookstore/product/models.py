@@ -23,10 +23,9 @@ class Bill(models.Model):
     user = models.OneToOneField(User,null=True,on_delete=models.CASCADE,blank=True)
     date_created = models.DateTimeField(auto_now_add=True,null=True)
     is_confirmed = models.BooleanField(default = False)
+    delivery = models.OneToOneField(address,null=True,on_delete=models.CASCADE, blank=True )
     def __str__(self):
         return self.user.username + " bill "+str(self.id)
-    delivery = models.OneToOneField(address,null=True,on_delete=models.CASCADE, blank=True )
-
 
 
 
@@ -35,10 +34,9 @@ class Order(models.Model):
     book = models.ForeignKey(book, null=True,on_delete=models.CASCADE)
     quantity = models.DecimalField(default = 1,max_digits =5, decimal_places=0)
     bill = models.ForeignKey(Bill,null=True, on_delete=models.SET_NULL,blank=True)    
-
-
-
-
+    @property
+    def calValue(self):
+        return self.book.price * self.quantity
 
 class favor(models.Model):
     #wrong in cascade

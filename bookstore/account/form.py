@@ -22,10 +22,8 @@ class DetailsForm(ModelForm):
         exclude = ['user']
 
 class AddressDetails(ModelForm):
-    province = forms.CharField(label='Province', widget=forms.TextInput(attrs={'class':'form-control'}))
-    city = forms.CharField(label='City', widget=forms.TextInput(attrs={'class':'form-control'}))
-    details = forms.CharField(label='Address Details', widget=forms.Textarea(attrs={'class':'form-control'}))
     class Meta:
         model = address
         fields = '__all__'
-        widgets = {'date_delivery': forms.DateInput(attrs={'class': 'datepicker','id':'id_date'})}
+        exclude = ['bill']
+        widgets = {'date_delivery': forms.DateInput(attrs={'class': 'datepicker','type':'date'})}

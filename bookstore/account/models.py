@@ -20,7 +20,8 @@ class UserDetails(models.Model):
 
 class address(models.Model):
     Province =models.CharField(max_length =30,null=True)
-    City = models.CharField(max_length=30, null=True)
-    Details = models.TextField(null=True)
-    date_delivery = models.DateField(blank=True, null=True)
+    City = models.CharField(max_length=30,null= True)
+    Details = models.CharField(max_length=50,null=True)
+    date_delivery = models.DateField(null=True)
+    
     

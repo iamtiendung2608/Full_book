@@ -98,8 +98,8 @@ def AddToBill(request):
     if request.method == 'POST':
         address = AddressDetails(request.POST)
         if address.is_valid():
-            address.save()
-            CurrentBill = Bill.objects.create(user = request.user, delivery = address)
+            S = address.save()
+            CurrentBill = Bill.objects.create(user = request.user, delivery = S)
             Order.objects.filter(account = request.user).update(bill = CurrentBill)
             return redirect('home')
     else:

@@ -1,4 +1,5 @@
 from email import message
+from django.db.models import FloatField 
 from django.shortcuts import render
 from .form import CreateUserFrom,DetailsForm
 from django.contrib import messages
@@ -56,13 +57,12 @@ def logoutUser(request):
 def Cart(request):
     # order = Order.objects.filter(account = request.user).values('book_id')
     # items = book.objects.filter(id__in = order)
-    # TotalCount = items.count()
-    # TotalPrice = items.aggregate(Sum('price'))['price__sum']
+    # TotalCount = items.count()aggregate(Sum('price'))['price__sum']
     items = Order.objects.filter(account = request.user)
+    TotalPrice = Order.objects.filter(account = request.user).aggregate(total_group=Sum(F('quantity')*F('book__price'), output_field=FloatField()))
     return render(request, 'cart.html',{
         'items': items,
-        # 'TotalPrice': TotalPrice,
-        # 'TotalCount': TotalCount
+        'Sum':TotalPrice['total_group'],
     })
 
 @login_required(login_url='login')
