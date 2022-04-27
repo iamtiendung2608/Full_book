@@ -5,6 +5,8 @@ from account.models import UserDetails,address
 from django.contrib.auth.models import User
 class tag(models.Model):
     name = models.CharField(max_length = 20)
+    fullName = models.CharField(max_length = 20,null=True)
+    describe = models.TextField(null=True)
     def __str__(self):
         return self.name
 
@@ -22,10 +24,13 @@ class book(models.Model):
 class Bill(models.Model):
     user = models.OneToOneField(User,null=True,on_delete=models.CASCADE,blank=True)
     date_created = models.DateTimeField(auto_now_add=True,null=True)
+    confirmCode = models.CharField(max_length = 10, null=True,unique=True)
     is_confirmed = models.BooleanField(default = False)
     delivery = models.OneToOneField(address,null=True,on_delete=models.CASCADE, blank=True )
     def __str__(self):
         return self.user.username + " bill "+str(self.id)
+
+
 
 
 

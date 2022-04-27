@@ -1,4 +1,138 @@
-{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/home.css'%}">
+    <link rel="stylesheet" href="{% static 'css/slide.css'%}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+    
+<div class="container bootdey">
+    <div class="col-md-3">
+        <section class="panel">
+            <div class="panel-body">
+                <input type="text" placeholder="Keyword Search" class="form-control" />
+            </div>
+        </section>
+        <section class="panel">
+            <header class="panel-heading">
+                Category
+            </header>
+            <div class="panel-body">
+                <ul class="nav prod-cat">
+                    {%for i in tags%}
+                    <li>
+                        <a href="{% url 'tag' i.id %}"> {{i.fullName}}</a>
+                    </li>
+                    {%endfor%}
+                </ul>
+            </div>
+        </section>
+        
+        <section class="panel">
+            <header class="panel-heading">
+                Best Seller
+            </header>
+            <div class="panel-body">
+                <div class="best-seller">
+                    <article class="media">
+                        <a class="pull-left thumb p-thumb">
+                            <img src="images/pic1.png" />
+                        </a>
+                        <div class="media-body">
+                            <a href="#" class="p-head">Item One Tittle</a>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="col-md-9">
+        <section class="panel">
+            <div class="panel-body">
+                <div class="pull-left">
+                    <ul class="pagination">
+                        <li><a href="#"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+                <div class="pull-right">
+                    <ul class="pagination">
+                        <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section class="panel">
+            <div class="accordian">
+                <ul>
+                    <li>
+                        <a href="#">
+                            <img src="images/pic2.png"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="images/pic3.png"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="images/pic4.png"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="images/pic1.png"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="images/pic5.png"/>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- product - list -->
+        <div class="row product-list">
+            {% for item  in  contexts%}
+            <div class="col-md-4">
+                <section class="panel">
+                    <div class="pro-img-box">
+                        <img src="{{item.image}}" alt="" />
+                        <a href="#" class="adtocart">
+                            <i class="fa fa-shopping-cart"></i>
+                        </a>
+                    </div>
+                    <div class="panel-body text-center">
+                        <h4>
+                            <a href="product/{{item.id}}" class="pro-title">
+                                {{item.name}}
+                            </a>
+                        </h4>
+                        <p class="price">${{item.price}}</p>
+                    </div>
+                </section>
+            </div>
+            <br>
+            {%endfor%}
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+
+{% comment %} {% extends 'base.html' %}
 {% load custom_tags %}
 {% block content %}
 <div class="container" style = "padding-top: 70px;">
@@ -41,4 +175,4 @@
 
 {% endblock content %}
 
-
+ {% endcomment %}

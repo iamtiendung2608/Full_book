@@ -15,7 +15,7 @@ class DetailsForm(ModelForm):
         ('MALE' , 'male'),
         ("FEMALE",'female')
     )
-    gender = forms.CharField(label='gender', widget=forms.RadioSelect(choices=GENDER_CHOICES))
+    gender = forms.ChoiceField(label='gender', choices=GENDER_CHOICES)
     class Meta:
         model = UserDetails
         fields = '__all__'

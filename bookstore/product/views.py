@@ -8,8 +8,9 @@ from django.shortcuts import redirect
 from .forms import BookForm
 from django.db.models import F
 from account.form import AddressDetails
-
+import random
 def homepage(request):
+    tags = tag.objects.all()
     '''if search button are hit Post Search form'''
     if request.method == 'POST':
         '''get value through name 'kw' from request'''
@@ -20,12 +21,12 @@ def homepage(request):
         '''normal load page get all the book'''
         context = book.objects.all()
     if not request.user.is_authenticated:
-        return render(request,'home.html',{'contexts': context,})
+        return render(request,'home.html',{'contexts': context,'tags':tags})
     order = Order.objects.filter(account = request.user).values('book_id')
     TotalCount = book.objects.filter(id__in = order).count()
     return render(request,'home.html',{
         'contexts': context,
-        'count':TotalCount,
+        'tags':tags,
     })
 
 def details(request, id = None):
@@ -94,16 +95,27 @@ def CheckOut(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
-def AddToBill(request):
+def CreateAddress(request):
     if request.method == 'POST':
         address = AddressDetails(request.POST)
         if address.is_valid():
             S = address.save()
-            CurrentBill = Bill.objects.create(user = request.user, delivery = S)
-            Order.objects.filter(account = request.user).update(bill = CurrentBill)
+            # return Confirm(request, S)
             return redirect('home')
     else:
         form = AddressDetails()
         return render(request,'BillDetails.html',{'form':form})
 
+# @login_required(login_url='login')
+# @allowed_users(allowed_role=['customer'])
+# def Confirm(request, S):
+#     if request.method == 'POST':
+#         pass
+#     else:
+#         num = str(random.randint(100000,999999))
+#         while(bill := Bill.objects.get(confirmCode=num)):
+#             num = str(random.randint(100000,999999))
+#         CurrentBill = Bill.objects.create(user = request.user,confirmCode = num, delivery = S)
+#         Order.objects.filter(account = request.user).update(bill = CurrentBill)
+#         return render(request, 'confirm.html',)
 

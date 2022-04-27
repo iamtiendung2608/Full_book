@@ -31,11 +31,11 @@
                   <div class="accordion-body">
                     <form action = "" method="post" onsubmit = "return valid()">
                         {% csrf_token %}
-                    <div class="mb-3">
-                          {{form}}
+                    <div class="form-group row">
+                          <div class="col-xs-4">{{form}}</div>
+                          <span id="warning"></span>
                           <button style="margin-top:20px"  type="submit" class="btn btn-primary">Submit</button>
-                        <span id="warning"></span>
-                        </div>
+                    </div>
                   </div>
                   </form>
                 </div>

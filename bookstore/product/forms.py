@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import book,tag
+from .models import book,tag,Bill
 class BookForm(ModelForm):
     name = forms.CharField(label='name', widget=forms.TextInput(attrs={'class':'form-control'}))
     price = forms.CharField(label='price', widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -11,4 +11,3 @@ class BookForm(ModelForm):
     class Meta:
         model = book
         fields = ['name','price','image','author','describe','tag']
-        

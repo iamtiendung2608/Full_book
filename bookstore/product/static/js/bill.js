@@ -1,5 +1,5 @@
 function ModifyClass(){
-    $("#target :input").addClass("form-control");
+    $("#target :input").addClass("form-control, col-xs-3");
 }
 function valid(){
     var province = $("#id_Province");
