@@ -1,8 +1,6 @@
 function Unable(){
 	$("#target :input"). prop("disabled", true)
-	$("input").addClass("form-control")
 	document.getElementById('btn_edit').disabled = false;
-
 }
 
 function Enable(){

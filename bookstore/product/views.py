@@ -7,8 +7,18 @@ from .models import tag, book, Order,Bill
 from django.shortcuts import redirect
 from .forms import BookForm
 from django.db.models import F
+from django.db.models import Sum
+from django.db.models import FloatField 
 from account.form import AddressDetails
 import random
+
+
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.template.loader import render_to_string
+
+
+
 def homepage(request):
     tags = tag.objects.all()
     '''if search button are hit Post Search form'''
@@ -100,22 +110,26 @@ def CreateAddress(request):
         address = AddressDetails(request.POST)
         if address.is_valid():
             S = address.save()
-            # return Confirm(request, S)
+            TotalPrice = Order.objects.filter(account = request.user).aggregate(total_group=Sum(F('quantity')*F('book__price'), output_field=FloatField()))
+            CurrentBill = Bill.objects.create(user = request.user, delivery = S, total = TotalPrice['total_group'])
+            Order.objects.filter(account = request.user).update(bill = CurrentBill)
             return redirect('home')
     else:
+        num = str(random.randint(100000,999999))
+        template = render_to_string('emailTemplate.html',{
+            'username':request.user.username,
+            'code':num
+        })
+        email = EmailMessage(
+            'Thank You!',
+            template,
+            settings.EMAIL_HOST_USER,
+            [request.user.email]
+        )
+        email.fail_silently = False
+        email.send()
         form = AddressDetails()
         return render(request,'BillDetails.html',{'form':form})
 
-# @login_required(login_url='login')
-# @allowed_users(allowed_role=['customer'])
-# def Confirm(request, S):
-#     if request.method == 'POST':
-#         pass
-#     else:
-#         num = str(random.randint(100000,999999))
-#         while(bill := Bill.objects.get(confirmCode=num)):
-#             num = str(random.randint(100000,999999))
-#         CurrentBill = Bill.objects.create(user = request.user,confirmCode = num, delivery = S)
-#         Order.objects.filter(account = request.user).update(bill = CurrentBill)
-#         return render(request, 'confirm.html',)
+
 

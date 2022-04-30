@@ -24,11 +24,11 @@ class book(models.Model):
 class Bill(models.Model):
     user = models.OneToOneField(User,null=True,on_delete=models.CASCADE,blank=True)
     date_created = models.DateTimeField(auto_now_add=True,null=True)
-    confirmCode = models.CharField(max_length = 10, null=True,unique=True)
     is_confirmed = models.BooleanField(default = False)
+    total = models.FloatField(default=0.0000)
     delivery = models.OneToOneField(address,null=True,on_delete=models.CASCADE, blank=True )
     def __str__(self):
-        return self.user.username + " bill "+str(self.id)
+        return self.user.username + " bill "+str(self.date_created)
 
 
 

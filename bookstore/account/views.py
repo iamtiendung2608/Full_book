@@ -24,8 +24,6 @@ def registPage(request,template='account/templates'):
             user = form.save()
             group = Group.objects.get(name='customer')
             user.groups.add(group)
-            username = form.cleaned_data.get('username')
-            messages.success(request,'Hello user: '+username)
             return HttpResponseRedirect('login')
         else:
             messages.error(request,form.error_messages)

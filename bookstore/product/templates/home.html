@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,14 +58,26 @@
             <div class="panel-body">
                 <div class="pull-left">
                     <ul class="pagination">
-                        <li><a href="#"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                        <li><a href="{% url 'home' %}"><i class="fa fa-home" aria-hidden="true"></i></a></li>
                     </ul>
                 </div>
                 <div class="pull-right">
                     <ul class="pagination">
-                        <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+                    {% if request.user.is_authenticated %}
+                        {% if request.user|has_group:"admin" %}
+                            <li ><a href="{% url 'checkout' %}"><i class="fa fa-line-chart" aria-hidden="true"></i> Checkout</a>
+                            <li ><a href="{% url 'adminAdd' %}"><i class="fa fa-plus" aria-hidden="true">  Add Product</i></a>
+                          {% else %}
+                          <li ><a target="_blank" rel="noopener noreferrer" href="{% url 'profile' %}"><i class="fa fa-user" aria-hidden="true"></i>   {{request.user.username}}</a></li>
+                          <li ><a target="_blank" rel="noopener noreferrer" href="account/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i>   cart   {{count}}</a></li>
+                        {% endif %}
+                    {% endif %}
+                    </li>
+                      {% if request.user.is_authenticated %}
+                              <li ><a target="_blank" rel="noopener noreferrer" href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+                      {% else %}
+                              <li ><a target="_blank" rel="noopener noreferrer" href="{% url 'login' %}"><i class="fa fa-sign-in" aria-hidden="true"></i></a></li>
+                      {% endif %}
                     </ul>
                 </div>
             </div>
@@ -102,19 +115,20 @@
         </section>
 
         <!-- product - list -->
-        <div class="row product-list">
+        
+        <div class="row product-list" >
             {% for item  in  contexts%}
             <div class="col-md-4">
                 <section class="panel">
                     <div class="pro-img-box">
                         <img src="{{item.image}}" alt="" />
-                        <a href="#" class="adtocart">
+                        <a href="{% url 'add' item.id %}" class="adtocart">
                             <i class="fa fa-shopping-cart"></i>
                         </a>
                     </div>
                     <div class="panel-body text-center">
                         <h4>
-                            <a href="product/{{item.id}}" class="pro-title">
+                            <a style="text-decoration: none;" href="product/{{item.id}}" class="pro-title">
                                 {{item.name}}
                             </a>
                         </h4>
