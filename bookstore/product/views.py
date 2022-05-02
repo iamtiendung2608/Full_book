@@ -41,9 +41,12 @@ def homepage(request):
 
 def details(request, id = None):
     context = book.objects.get(id=id)
-    return render(request,'details.html',{'context': context})
-
-
+    tags = book.objects.filter(id=id).values_list('tag')
+    books = book.objects.filter(tag__id__in =  tags).distinct()
+    return render(request,'details.html',{
+        'context': context,
+        'books':books
+    })
 
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
