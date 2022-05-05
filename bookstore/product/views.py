@@ -9,7 +9,7 @@ from .forms import BookForm
 from django.db.models import F
 from django.db.models import Sum
 from django.db.models import FloatField 
-from account.form import AddressDetails
+from account.form import AddressDetails,PaymentDetails
 import random
 
 
@@ -106,33 +106,51 @@ def CheckOut(request):
     return render(request,'profile.html',contexts)
 
 
+
+
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
 def CreateAddress(request):
     if request.method == 'POST':
         address = AddressDetails(request.POST)
         if address.is_valid():
-            S = address.save()
-            TotalPrice = Order.objects.filter(account = request.user).aggregate(total_group=Sum(F('quantity')*F('book__price'), output_field=FloatField()))
-            CurrentBill = Bill.objects.create(user = request.user, delivery = S, total = TotalPrice['total_group'])
-            Order.objects.filter(account = request.user).update(bill = CurrentBill)
+            address.save()
             return redirect('home')
     else:
-        num = str(random.randint(100000,999999))
-        template = render_to_string('emailTemplate.html',{
-            'username':request.user.username,
-            'code':num
-        })
-        email = EmailMessage(
-            'Thank You!',
-            template,
-            settings.EMAIL_HOST_USER,
-            [request.user.email]
-        )
-        email.fail_silently = False
-        email.send()
         form = AddressDetails()
-        return render(request,'BillDetails.html',{'form':form})
+        return render(request,'Address.html',{
+            'form':form,
+        })
 
+
+@login_required(login_url='login')
+@allowed_users(allowed_role=['customer'])
+def CreatePayment(request):
+    if request.method == 'POST':
+        payment = PaymentDetails(request.POST)
+        if payment.is_valid():
+            payment.save()
+            return redirect('assignAddress')
+    else:
+        form = PaymentDetails()
+        return render(request,'Payment.html',{
+            'form':form,
+        })
+
+# sendEmail(request.user.username,num, request.user.email)
+
+def sendEmail(user,num, email):
+    template = render_to_string('emailTemplate.html',{
+            'username':user,
+            'code':num
+    })
+    email = EmailMessage(
+        'Thank You!',
+        template,
+        settings.EMAIL_HOST_USER,
+        [email]
+    )
+    email.fail_silently = False
+    email.send()
 
 

@@ -1,0 +1,62 @@
+{% extends "baseCheckOut.html" %}
+{% load static %}
+
+
+
+{% block content %}
+<div class="content-panel">
+    <h2 class="title">Address</h2>
+    <div class="billing">
+        <div class="secure text-center margin-bottom-md">
+            <h3 class="margin-bottom-md text-success">
+                    <span class="fs1 icon" aria-hidden="true" data-icon=""></span>
+                    Where this bill delivered<br>
+                </h3>
+        </div>
+        <form id="billing" class="form-horizontal" method="post" action="#" role="form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Province: </label>
+                <div class="col-sm-9">
+                    <input name="{{form.Province.name}}"  type="text" class="form-control" placeholder="An Giang">
+                    <p class="help-block">Where to find you?</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">City: </label>
+                <div class="col-sm-9">
+                    <input name="{{form.City.name}}"  type="text" class="form-control" placeholder="Hanoi">
+                    <p class="help-block">City match with Province</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Details: </label>
+                <div class="col-sm-9 form-inline">
+                    <input name="{{form.Details.name}}"  placeholder ="FLC resort..." type="text" class="form-control">
+                    <p class="help-block">Your home number...</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Date Delivery: </label>
+                <div class="col-sm-9 form-inline">
+                    <input name="{{form.date_delivery.name}}" type="date"  class="form-control">
+                    <p class="help-block">When you want to receive</p>
+                </div>
+            </div>
+            <hr>
+            <div class="action-wrapper text-center">
+                <h4 class="notes margin-bottom-sm">
+                        You'll be charged <span class="text-stronger">$99/year</span> 
+                    </h4>
+                <div class="action-btn">
+                    <button class="btn btn-success btn-lg">
+                        Make Payment
+                        <i class="fa fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

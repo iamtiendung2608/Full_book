@@ -17,10 +17,19 @@ class UserDetails(models.Model):
         return self.user.username +' Profile'
     def save(self,*args, **kwargs):
         super(UserDetails, self).save(*args, **kwargs)
+  
 
 class address(models.Model):
     Province =models.CharField(max_length =30,null=True)
     City = models.CharField(max_length=30,null= True)
     Details = models.CharField(max_length=50,null=True)
     date_delivery = models.DateField(null=True)
-    confirmCode = models.CharField(max_length = 10, null=True)
+
+ 
+class Payment(models.Model):
+    name = models.CharField(max_length = 30 , null=True)
+    CardNumber = models.CharField(max_length=16, null=True)
+    ExpirationMonth = models.DecimalField(default = 1,max_digits =5, decimal_places=0)
+    ExpirationYear = models.DecimalField(default = 2022,max_digits =5, decimal_places=0)
+    SecurityCode = models.CharField(max_length = 5,null=True)
+

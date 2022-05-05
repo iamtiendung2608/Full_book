@@ -1,0 +1,78 @@
+{% extends 'baseCheckOut.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="content-panel">
+    <h2 class="title">Billing</h2>
+    <div class="billing">
+        <div class="secure text-center margin-bottom-md">
+            <h3 class="margin-bottom-md text-success">
+                    <span class="fs1 icon" aria-hidden="true" data-icon=""></span>
+                    Secure credit card payment<br>
+                    <small>This is a secure 128-bit SSL encrypted payment</small>
+                </h3>
+        </div>
+        <form id="billing" class="form-horizontal" method="post" action="" role="form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Name on Card</label>
+                <div class="col-sm-9">
+                    <input name="{{form.name.name}}"  type="text" class="form-control" placeholder="Your name">
+                    <p class="help-block">As it appears on the card</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Card Number </label>
+                <div class="col-sm-9">
+                    <input name="{{form.CardNumber.name}}"  type="text" class="form-control" placeholder="••••  ••••  ••••  ••••">
+                    <p class="help-block">The 16 digits on the front of your credit card.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Expiration Date</label>
+                <div class="col-sm-9 form-inline">
+                    <select class="form-control" name="{{form.ExpirationMonth.name}}" >
+                        {% for choice in form.ExpirationMonth.field.choices %}
+                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="divider">/</span>
+                    <select class="form-control" name="{{form.ExpirationYear.name}}" >
+                        {% for choice in form.ExpirationYear.field.choices %}
+                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="help-block">The date your credit card expires. Find this on the front of your credit card.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Security Code</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control"  style="width: 120px;" placeholder="CVC" name="{{form.SecurityCode.name}}" >
+                    <p class="help-block">The last 3 digits displayed on the back of your credit card.</p>
+                </div>
+            </div>
+            <hr>
+            <div class="action-wrapper text-center">
+                <h4 class="notes margin-bottom-sm">
+                        You'll be charged <span class="text-stronger">$99/year</span> 
+                    </h4>
+                <div class="action-btn">
+                    <button class="btn btn-success btn-lg">
+                        Make Payment
+                        <i class="fa fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+
+
+
+

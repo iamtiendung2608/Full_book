@@ -1,7 +1,7 @@
 from pydoc import describe
 from django.db import models
 from account.form import CreateUserFrom
-from account.models import UserDetails,address
+from account.models import UserDetails,address,Payment
 from django.contrib.auth.models import User
 class tag(models.Model):
     name = models.CharField(max_length = 20)
@@ -23,13 +23,16 @@ class book(models.Model):
 
 class Bill(models.Model):
     user = models.OneToOneField(User,null=True,on_delete=models.CASCADE,blank=True)
-    date_created = models.DateTimeField(auto_now_add=True,null=True)
+    
+    address = models.ForeignKey(address,null=True,on_delete=models.SET_NULL)
+
+    payment = models.ForeignKey(Payment,null=True,on_delete=models.SET_NULL)
+
+
     is_confirmed = models.BooleanField(default = False)
     total = models.FloatField(default=0.0000)
-    delivery = models.OneToOneField(address,null=True,on_delete=models.CASCADE, blank=True )
     def __str__(self):
         return self.user.username + " bill "+str(self.date_created)
-
 
 
 
