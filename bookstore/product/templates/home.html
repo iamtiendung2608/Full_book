@@ -124,9 +124,9 @@
                 <section class="panel">
                     <div class="pro-img-box">
                         <img src="{{item.image}}" alt="" />
-                        <a href="{% url 'add' item.id %}" class="adtocart">
+                        <button class="adtocart">
                             <i class="fa fa-shopping-cart"></i>
-                        </a>
+                        </button>
                     </div>
                     <div class="panel-body text-center">
                         <h4>
@@ -143,6 +143,27 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $('#adtocart').click(function(){
+            $.ajax({
+                url = "{% url 'add' item.id %}",
+                type = "GET",
+                data:{
+
+                },
+                success: function(response){
+                },
+                error: function(){
+
+                }
+            });
+        });
+    });
+
+
+
+</script>
 </body>
 </html>
 

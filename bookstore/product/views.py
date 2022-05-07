@@ -69,6 +69,8 @@ def TagDetails(request, id = None):
         'contexts': items,
     })
 
+
+
 @login_required(login_url='login')
 @allowed_users(allowed_role=['admin'])
 def AddBook(request):
@@ -80,6 +82,9 @@ def AddBook(request):
     else:
         form = BookForm()
     return render(request, 'edit.html',{'form':form})
+
+
+
 
 @login_required(login_url='login')
 @allowed_users(allowed_role=['admin'])
@@ -118,6 +123,7 @@ def CreateAddress(request):
         addressDetails = AddressDetails(request.POST, instance = ele)
         if addressDetails.is_valid():
             addressDetails.save()
+            Order.objects.filter(account = request.user).update(bill = bill)
             return redirect('home')
     else:
         form = AddressDetails(instance = ele)
