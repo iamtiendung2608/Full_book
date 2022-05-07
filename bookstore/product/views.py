@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from account.decorators import allowed_users
+from account.models import Payment,address
 from .models import tag, book, Order,Bill
 from django.shortcuts import redirect
 from .forms import BookForm
@@ -11,12 +12,12 @@ from django.db.models import Sum
 from django.db.models import FloatField 
 from account.form import AddressDetails,PaymentDetails
 import random
-
-
+from django.http import JsonResponse
+from django.shortcuts import HttpResponse
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
-
+import re
 
 
 def homepage(request):
@@ -111,13 +112,15 @@ def CheckOut(request):
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
 def CreateAddress(request):
+    bill = Bill.objects.latest('date_created')
+    ele = address.objects.get(bill = bill)
     if request.method == 'POST':
-        address = AddressDetails(request.POST)
-        if address.is_valid():
-            address.save()
+        addressDetails = AddressDetails(request.POST, instance = ele)
+        if addressDetails.is_valid():
+            addressDetails.save()
             return redirect('home')
     else:
-        form = AddressDetails()
+        form = AddressDetails(instance = ele)
         return render(request,'Address.html',{
             'form':form,
         })
@@ -127,19 +130,37 @@ def CreateAddress(request):
 @allowed_users(allowed_role=['customer'])
 def CreatePayment(request):
     if request.method == 'POST':
-        payment = PaymentDetails(request.POST)
+        bill = Bill.objects.latest('date_created')
+        element = Payment.objects.get(bill = bill)
+        payment = PaymentDetails(request.POST, instance = element)
         if payment.is_valid():
             payment.save()
             return redirect('assignAddress')
     else:
-        form = PaymentDetails()
+        bill = Bill.objects.create(user = request.user)
+        payment = Payment.objects.get(bill = bill)
+        form = PaymentDetails(instance = payment)
         return render(request,'Payment.html',{
             'form':form,
         })
 
-# sendEmail(request.user.username,num, request.user.email)
 
-def sendEmail(user,num, email):
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
+def callEmail(request):
+    if is_ajax(request = request):
+        num = random.randint(100000,999999)
+        sendEmail(request.user.username,num,request.user.email)
+        print(num)
+        return JsonResponse({
+            'code':num
+        }, status=200)
+    return HttpResponse('assignAddress')
+
+
+def sendEmail(user, num, email):
     template = render_to_string('emailTemplate.html',{
             'username':user,
             'code':num

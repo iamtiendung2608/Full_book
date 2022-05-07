@@ -15,9 +15,12 @@
 <div class="container bootdey">
     <div class="col-md-3">
         <section class="panel">
-            <div class="panel-body">
-                <input type="text" placeholder="Keyword Search" class="form-control" />
-            </div>
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="panel-body">
+                    <input name="kw" type="text" placeholder="Keyword Search" class="form-control" />
+                </div>
+            </form>
         </section>
         <section class="panel">
             <header class="panel-heading">
@@ -113,7 +116,6 @@
                 </ul>
             </div>
         </section>
-
         <!-- product - list -->
         
         <div class="row product-list" >

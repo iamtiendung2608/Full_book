@@ -49,14 +49,38 @@
                         You'll be charged <span class="text-stronger">$99/year</span> 
                     </h4>
                 <div class="action-btn">
-                    <button class="btn btn-success btn-lg">
+                    <button id="btn-submit" disabled class="btn btn-success btn-lg">
                         Make Payment
                         <i class="fa fa-chevron-right"></i>
                     </button>
                 </div>
             </div>
         </form>
+        <button id="ajz" class="btn btn-info btn-lg" >Confirm</button>
     </div>
 </div>
-
+<script>
+    $(document).ready(function(){
+        $("#ajz").click(function(){
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'assignConfirm' %}",
+                    data: {
+                    },
+                    success: function(response){
+                       var userConfirm = window.prompt("Input your confirm code: ");
+                       if(userConfirm == response.code){
+                            $("#btn-submit").prop('disabled',false);
+                            $(this).prop('disabled',true);
+                       }
+                        else
+                            window.alert('Confirm code is incorrect');
+                    },
+                    error: function () {
+                        console.log("error");
+                    },
+                })
+        });
+    });
+</script>
 {% endblock content %}

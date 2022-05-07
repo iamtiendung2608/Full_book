@@ -1,7 +1,6 @@
 from pydoc import describe
 from django.db import models
-from account.form import CreateUserFrom
-from account.models import UserDetails,address,Payment
+
 from django.contrib.auth.models import User
 class tag(models.Model):
     name = models.CharField(max_length = 20)
@@ -23,17 +22,13 @@ class book(models.Model):
 
 class Bill(models.Model):
     user = models.OneToOneField(User,null=True,on_delete=models.CASCADE,blank=True)
-    
-    address = models.ForeignKey(address,null=True,on_delete=models.SET_NULL)
-
-    payment = models.ForeignKey(Payment,null=True,on_delete=models.SET_NULL)
-
-
+    date_created = models.DateField(auto_now= True, null=True)
     is_confirmed = models.BooleanField(default = False)
     total = models.FloatField(default=0.0000)
     def __str__(self):
         return self.user.username + " bill "+str(self.date_created)
-
+    class Meta:
+        unique_together = (('user','date_created'),)
 
 
 
@@ -45,8 +40,3 @@ class Order(models.Model):
     @property
     def calValue(self):
         return self.book.price * self.quantity
-
-class favor(models.Model):
-    #wrong in cascade
-    user = models.OneToOneField(UserDetails,on_delete=models.CASCADE,blank=True,null=True)
-    tag = models.ManyToManyField(tag)

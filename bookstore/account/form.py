@@ -54,3 +54,5 @@ class PaymentDetails(ModelForm):
     class Meta:
         model = Payment
         fields = '__all__'
+        exclude = ['bill']
+
