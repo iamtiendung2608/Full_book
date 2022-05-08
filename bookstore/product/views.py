@@ -1,3 +1,4 @@
+import json
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -18,27 +19,37 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
 import re
-
+from django.core import serializers
 
 def homepage(request):
     tags = tag.objects.all()
-    '''if search button are hit Post Search form'''
-    if request.method == 'POST':
-        '''get value through name 'kw' from request'''
-        name = request.POST.get('kw')
-        '''__contains indicated that book's name must contain search value'''
-        context = book.objects.filter(name__contains = name)
+    if is_ajax(request = request):
+        text = request.GET.get('input')
+        data = book.objects.only('author','describe').filter(name__icontains = text)
+        qs_json = serializers.serialize('json', data)
+        return HttpResponse(qs_json, content_type='application/json')
     else:
-        '''normal load page get all the book'''
         context = book.objects.all()
-    if not request.user.is_authenticated:
-        return render(request,'home.html',{'contexts': context,'tags':tags})
-    order = Order.objects.filter(account = request.user).values('book_id')
-    TotalCount = book.objects.filter(id__in = order).count()
     return render(request,'home.html',{
         'contexts': context,
         'tags':tags,
     })
+
+
+
+def callEmail(request):
+    if is_ajax(request = request):
+        num = random.randint(100000,999999)
+        sendEmail(request.user.username,num,request.user.email)
+        print(num)
+        return JsonResponse({
+            'code':num
+        }, status=200)
+    return HttpResponse('assignAddress')
+
+
+
+
 
 def details(request, id = None):
     context = book.objects.get(id=id)
@@ -49,18 +60,23 @@ def details(request, id = None):
         'books':books
     })
 
+
+
+
+
+
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
 def addToCart(request,id=None):
-    item = book.objects.get(id=id)
-    owner = request.user
-    order = Order.objects.filter(account = owner,book=item)
-    if order:
-        order.update(quantity = F('quantity')+1)
-    else:
-        print('here')
-        Order.objects.create(account = owner,book=item)
-    return redirect('home')
+    if is_ajax(request = request):
+        item = book.objects.get(id=id)
+        owner = request.user
+        order = Order.objects.filter(account = owner,book=item, bill=None)
+        if order:
+            order.update(quantity = F('quantity')+1)
+        else:
+            Order.objects.create(account = owner,book=item)
+        return JsonResponse({'data':None},status = 200)
 
 
 def TagDetails(request, id = None):
@@ -155,15 +171,7 @@ def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
-def callEmail(request):
-    if is_ajax(request = request):
-        num = random.randint(100000,999999)
-        sendEmail(request.user.username,num,request.user.email)
-        print(num)
-        return JsonResponse({
-            'code':num
-        }, status=200)
-    return HttpResponse('assignAddress')
+
 
 
 def sendEmail(user, num, email):

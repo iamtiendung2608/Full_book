@@ -27,6 +27,9 @@ class address(models.Model):
     City = models.CharField(max_length=30,null= True)
     Details = models.CharField(max_length=50,null=True)
     date_delivery = models.DateField(null=True)
+    def __str__(self):
+        return self.Details
+
 
 class Payment(models.Model):
     bill = models.ForeignKey(Bill,null=True, blank=True, on_delete = models.CASCADE)
@@ -36,4 +39,6 @@ class Payment(models.Model):
     ExpirationMonth = models.DecimalField(default = 1,max_digits =5, decimal_places=0)
     ExpirationYear = models.DecimalField(default = 2022,max_digits =5, decimal_places=0)
     SecurityCode = models.CharField(max_length = 5,null=True)
+    def __str__(self):
+        return self.CardNumber
 

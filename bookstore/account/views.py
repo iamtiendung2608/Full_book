@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.contrib.auth.models import User
 from .models import UserDetails
+from product.models import  Bill
 from django.db.models import F, Q
 # Create your views here.
 @unauthenticated_user
@@ -64,6 +65,7 @@ def Cart(request):
         'Sum':TotalPrice['total_group'],
     })
 
+
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
 def MoreItems(request, id = None):
@@ -92,13 +94,14 @@ def UserProfile(request):
             form.save()
             return redirect('profile')
         else:
-            print(form.errors.as_data())
             return redirect('userDetails')
     form = DetailsForm(instance = details)
+    bills = Bill.objects.filter(user = request.user)
     return render(request,'userDetails.html',{
         'form':form,
-        'pic':details.profile_pic
-        })
+        'pic':details.profile_pic,
+        'bills': bills,
+    })
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
 def CartDelete(request, id = None):

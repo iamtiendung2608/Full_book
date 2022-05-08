@@ -13,5 +13,4 @@ urlpatterns = [
     path('book/edit/<int:id>',EditBook,name = 'adminEdit'),
     path('book/delete/<int:id>',DeleteBook,name = 'adminDelete'),
     path('shop/checkout',CheckOut,name='checkout'),
-
 ]

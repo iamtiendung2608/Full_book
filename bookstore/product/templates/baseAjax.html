@@ -1,0 +1,22 @@
+
+{% block contents %}
+ 
+{% endblock contents %}
+
+<script>
+    $('.adtocart').click(function(){
+        console.log($('#linkadd').attr('href'));
+        $.ajax({
+            type: 'GET',
+            url: $('#linkadd').attr('href'),
+            data: {
+            },
+            success: function(response){
+                console.log('success')
+            },
+            error: function () {
+                console.log('errors')
+            }
+        });
+    });
+</script>
