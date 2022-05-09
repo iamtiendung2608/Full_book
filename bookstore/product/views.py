@@ -7,9 +7,9 @@ from account.decorators import allowed_users
 from account.models import Payment,address
 from .models import tag, book, Order,Bill
 from django.shortcuts import redirect
-from .forms import BookForm
+from .forms import BookForm, TagForm
 from django.db.models import F
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from django.db.models import FloatField 
 from account.form import AddressDetails,PaymentDetails
 import random
@@ -36,7 +36,6 @@ def homepage(request):
     })
 
 
-
 def callEmail(request):
     if is_ajax(request = request):
         num = random.randint(100000,999999)
@@ -49,8 +48,6 @@ def callEmail(request):
 
 
 
-
-
 def details(request, id = None):
     context = book.objects.get(id=id)
     tags = book.objects.filter(id=id).values_list('tag')
@@ -59,8 +56,6 @@ def details(request, id = None):
         'context': context,
         'books':books
     })
-
-
 
 
 
@@ -81,8 +76,10 @@ def addToCart(request,id=None):
 
 def TagDetails(request, id = None):
     items = book.objects.filter(tag__id = id)
+    tags = tag.objects.all()
     return render(request,'home.html',{
         'contexts': items,
+        'tags':tags,
     })
 
 
@@ -100,8 +97,6 @@ def AddBook(request):
     return render(request, 'edit.html',{'form':form})
 
 
-
-
 @login_required(login_url='login')
 @allowed_users(allowed_role=['admin'])
 def EditBook(request, id = None):
@@ -115,6 +110,38 @@ def EditBook(request, id = None):
         form = BookForm(instance = item)
     return render(request, 'edit.html',{'form':form})
 
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_role=['admin'])
+def AddTag(request):
+    if(request.method == 'POST'):
+        form = TagForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = TagForm()
+    return render(request, 'edit.html',{'form':form})
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_role=['admin'])
+def EditTag(request, id = None):
+    item = tag.objects.get(id=id)
+    if request.method == 'POST':
+        form = TagForm(request.POST,instance = item)
+        if form.is_valid:
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = TagForm(instance = item)
+    return render(request, 'edit.html',{'form':form})
+
+
+
+
+
 @login_required(login_url='login')
 @allowed_users(allowed_role=['admin'])
 def DeleteBook(request, id = None):
@@ -124,9 +151,15 @@ def DeleteBook(request, id = None):
 @login_required(login_url='login')
 @allowed_users(allowed_role=['admin'])
 def CheckOut(request):
-    contexts = {}
-    return render(request,'profile.html',contexts)
-
+    bills = Bill.objects.count()
+    totals = Bill.objects.all().aggregate(Sum('total'))['total__sum']
+    products = Order.objects.all().aggregate(Count('quantity'))['quantity__count']
+    contexts = {
+        'bills':bills,
+        'totals':totals,
+        'products':products,
+    }
+    return render(request,'checkOut.html',contexts)
 
 
 

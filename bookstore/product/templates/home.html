@@ -1,7 +1,5 @@
-
 {% load static %}
 {% load custom_tags %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,9 +15,11 @@
 <div class="container bootdey">
     <div class="col-md-3">
         <section class="panel">
-                <div class="panel-body">
-                    <input id="searchText" name="kw" type="text" placeholder="Keyword Search" class="form-control" />
-                </div>
+                {% if request.user|has_group:"customer" %}
+                    <div class="panel-body">
+                        <input id="searchText" name="kw" type="text" placeholder="Keyword Search" class="form-control" />
+                    </div>
+                {% endif %}
         </section>
         <section class="panel">
             <header class="panel-heading">
@@ -28,9 +28,15 @@
             <div class="panel-body">
                 <ul class="nav prod-cat">
                     {%for i in tags%}
-                    <li>
-                        <a href="{% url 'tag' i.id %}"> {{i.fullName}}</a>
-                    </li>
+                        {% if request.user|has_group:"admin" %}
+                            <li>
+                                <a href="{% url 'Edittag' i.id %}"> {{i.fullName}}</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{% url 'tag' i.id %}"> {{i.fullName}}</a>
+                            </li>
+                        {% endif %}
                     {%endfor%}
                 </ul>
             </div>
@@ -67,12 +73,14 @@
                     <ul class="pagination">
                     {% if request.user.is_authenticated %}
                         {% if request.user|has_group:"admin" %}
-                            <li ><a href="{% url 'checkout' %}"><i class="fa fa-line-chart" aria-hidden="true"></i> Checkout</a>
-                            <li ><a href="{% url 'adminAdd' %}"><i class="fa fa-plus" aria-hidden="true">  Add Product</i></a>
-                          {% else %}
+                            <li><a href="{% url 'checkout' %}"><i class="fa fa-line-chart" aria-hidden="true"></i> Checkout</a>
+                            <li><a href="{% url 'adminAdd' %}"><i class="fa fa-plus" aria-hidden="true">  Add Product</i></a>
+                            <li><a href="{% url 'Addtag' %}"><i class="fa fa-plus" aria-hidden="true">  Add Tag</i></a>
+                        {% else %}
                           <li ><a target="_blank" rel="noopener noreferrer" href="{% url 'profile' %}"><i class="fa fa-user" aria-hidden="true"></i>   {{request.user.username}}</a></li>
                           <li ><a target="_blank" rel="noopener noreferrer" href="account/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i>   cart   {{count}}</a></li>
                         {% endif %}
+                        <li ><a target="_blank" rel="noopener noreferrer" href="/user/chat"><i class="fa fa-comment" aria-hidden="true"></i></a></li>
                     {% endif %}
                     </li>
                       {% if request.user.is_authenticated %}
@@ -116,17 +124,19 @@
             </div>
         </section>
         <!-- product - list -->
-        
         <div id="listProduct" class="row product-list" >
             {% for item  in  contexts%}
             <div class="col-md-4">
                 <section class="panel">
                     <div class="pro-img-box">
                         <img src="{{item.image}}" alt="" />
-                        <button class="adtocart" onclick="add_e({{item.id}})">
-                            <i class="fa fa-shopping-cart"></i>
-                        </button>
-                        <div id="linkadd" hidden >{{item.id}}</div>
+                        {% if request.user|has_group:"admin" %}
+                            <a href = "% url 'adminEdit' item.id%"></a>
+                        {% else %}
+                            <button class="adtocart" onclick="add_e({{item.id}} , '{{item.name}}')">
+                                <i class="fa fa-shopping-cart"></i>
+                            </button>
+                        {% endif %}
                     </div> 
                     <div class="panel-body text-center">
                         <h4>
@@ -155,7 +165,6 @@
                 success: function(response){
                     $('#listProduct').empty();
                     for(let i = 0;i<response.length;i++){
-                        console.log(response[i]);
                         var  k = putElement(response[i].fields,response[i].pk);
                         $('#listProduct').append(k);
                     }
@@ -166,25 +175,27 @@
         });
     });
     function putElement(item,pk){
-        var ele = "<div class='col-md-4'><section class='panel'><div class='pro-img-box'><img src='"+item.image+"' /><button class='adtocart'><i class='fa fa-shopping-cart'></i></button></div><div class='panel-body text-center'><h4><a style='text-decoration: none;' href='product/"+pk+"' class='pro-title'>"+item.name+"</a></h4><p class='price'>"+item.price.toString()+'$'+"</p></div></section></div><br>";
+        ar = "'"+item.name+"'";
+        var ele = "<div class='col-md-4'><section class='panel'><div class='pro-img-box'><img src='"+item.image+"' /><button onclick='add_e( "+pk+", \"" + item.name.toString() + "\" )' class='adtocart'><i class='fa fa-shopping-cart'></i></button></div><div class='panel-body text-center'><h4><a style='text-decoration: none;' href='product/"+pk+"' class='pro-title'>"+item.name+"</a></h4><p class='price'>"+item.price.toString()+'$'+"</p></div></section></div><br>";
         return ele;
     }
-
-    function add_e(id){
+    function add_e(id, message){
          $.ajax({
             type: 'GET',
             url: '/add/'+id,
             data: {
             },
             success: function(response){
-                window.alert('Add success');
+                    jQuery(document.body).append("<div class='push-notification' id='notification'>"+"Add "+message+" to your card."+"</div>");
+                    jQuery('#notification').show().fadeOut(2000, function () {
+                        jQuery('#notification').remove();
+                    });
             },
             error: function () {
                 console.log('errors')
             }
         });
     }
-
 </script> 
 </body>
 </html>

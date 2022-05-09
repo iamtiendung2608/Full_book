@@ -11,3 +11,9 @@ class BookForm(ModelForm):
     class Meta:
         model = book
         fields = ['name','price','image','author','describe','tag']
+
+
+class TagForm(ModelForm):
+    class Meta:
+        model = tag
+        fields = '__all__'

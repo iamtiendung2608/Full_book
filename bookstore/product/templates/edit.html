@@ -1,6 +1,25 @@
-{% extends 'base.html' %}
-{% block content %} 
-<form action="" method="post">
+{% extends 'baseCheckOut.html' %}
+{% block content %}
+<style>
+  h1{
+    display: flex;
+    font-size: 25px;
+    text-align: center;
+    margin:20px;
+    justify-content:center;
+    align-items: flex-start;
+    font-weight: bold;
+    font-family: 'Koulen', cursive;
+  }
+  #form{  
+    font-family: 'Koulen', cursive;
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<div class="content-panel">
+  <h1>Admin Work Site</h1>
+<form id="form" action="" method="post">
     {% csrf_token %}
     <div class="row justify-content-center">
       <div class="col-6">
@@ -12,5 +31,6 @@
       </div>
     </div>
   </form>
+</div>
 {% endblock content %}
 
