@@ -8,7 +8,7 @@ from account.models import Payment,address
 from .models import tag, book, Order,Bill
 from django.shortcuts import redirect
 from .forms import BookForm, TagForm
-from django.db.models import F
+from django.db.models import F, Q
 from django.db.models import Sum, Count
 from django.db.models import FloatField 
 from account.form import AddressDetails,PaymentDetails
@@ -153,12 +153,19 @@ def DeleteBook(request, id = None):
 def CheckOut(request):
     bills = Bill.objects.count()
     totals = Bill.objects.all().aggregate(Sum('total'))['total__sum']
-    products = Order.objects.all().aggregate(Count('quantity'))['quantity__count']
+    products = Order.objects.filter(~Q(bill = None)).aggregate(Count('quantity'))['quantity__count']
+    x = Order.objects.filter(~Q(bill = None)).order_by('quantity').values_list('book__id')
+    books = book.objects.filter(id__in = x )
+
+
+    
     contexts = {
         'bills':bills,
         'totals':totals,
         'products':products,
+        'books':books
     }
+
     return render(request,'checkOut.html',contexts)
 
 
@@ -172,7 +179,20 @@ def CreateAddress(request):
         addressDetails = AddressDetails(request.POST, instance = ele)
         if addressDetails.is_valid():
             addressDetails.save()
-            Order.objects.filter(account = request.user).update(bill = bill)
+            filter1 = Q(account = request.user)
+            filter2 = Q(bill = None)
+
+            items = Order.objects.filter(filter1 & filter2)
+            
+            totals = items.aggregate(total_group=Sum(F('quantity')*F('book__price'), output_field=FloatField()))
+            
+            print(totals['total_group'])
+            
+            
+            
+            bill.total = totals['total_group']
+            bill.save(update_fields=["total"])
+            items.update(bill = bill)
             return redirect('home')
     else:
         form = AddressDetails(instance = ele)
@@ -190,8 +210,11 @@ def CreatePayment(request):
         payment = PaymentDetails(request.POST, instance = element)
         if payment.is_valid():
             payment.save()
-            return redirect('assignAddress')
+        return redirect('assignAddress')
     else:
+
+
+
         bill = Bill.objects.create(user = request.user)
         payment = Payment.objects.get(bill = bill)
         form = PaymentDetails(instance = payment)
@@ -202,8 +225,6 @@ def CreatePayment(request):
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
-
-
 
 
 

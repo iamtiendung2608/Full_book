@@ -10,19 +10,14 @@
 			<table class="table table-sm">
 				<tr>
 					<th>Product</th>
-					<th>Note</th>
-					<th>Date Orderd</th>
-					<th>Status</th>
+					<th>Price</th>
 				</tr>
-				{% comment %} {% for order in orders %}
+				 {% for order in books %}
 				<tr>
-					<td>{{order.product}}</td>
-					<td>{{order.note}}</td>
-					<td>{{order.date_created}}</td>
-					<td>{{order.status}}</td>
+					<td>{{order.name}}</td>
+					<td>{{order.price}}</td>
 				</tr>
-				{% endfor %} {% endcomment %}
-
+				{% endfor %}
 			</table>
 		</div>
 	</div>
