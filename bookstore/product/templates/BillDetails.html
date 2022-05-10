@@ -1,0 +1,125 @@
+{% load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/billDetails.css'%}">
+</head>
+<body>
+                          
+<div class="receipt-content">
+    <div class="container bootstrap snippets bootdey">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="invoice-wrapper">
+					<div class="intro">
+						Hi <strong>{{request.user.UserDetails.firstName}}</strong>, 
+						<br>
+						This is the receipt for a payment of <strong>${{bill.total}}</strong> (USD) for your works
+					</div>
+					<div class="payment-info">
+						<div class="row">
+							<div class="col-sm-6">
+								<span>Payment No.</span>
+								<strong>434334343</strong>
+							</div>
+							<div class="col-sm-6 text-right">
+								<span>Payment Date</span>
+								<strong>{{bill.date_created}}</strong>
+							</div>
+						</div>
+					</div>
+
+					<div class="payment-details">
+						<div class="row">
+							<div class="col-sm-6">
+								<span>Client</span>
+								<p>
+									989 5th Avenue <br>
+									City of monterrey <br>
+									55839 <br>
+									USA <br>
+									
+								</p>
+							</div>
+							<div class="col-sm-6 text-right">
+								<span>Payment To</span>
+								<p>
+									{{address.Details}} <br>
+									{{address.City}} <br>
+									{{address.Province}} <br>
+									VietNam <br>    
+									
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="line-items">
+						<div class="headers clearfix">
+							<div class="row">
+								<div class="col-xs-4">Description</div>
+								<div class="col-xs-3">Quantity</div>
+								<div class="col-xs-5 text-right">Amount</div>
+							</div>
+						</div>
+						<div class="items">
+							<div class="row item">
+                                {% for order in orders %}
+                                    <div class="col-xs-4 desc">
+                                        {{order.book.name}}
+                                    </div>
+                                    <div  class="col-xs-3 qty">
+                                        {{order.quantity}}
+                                    </div>
+                                    <div class="col-xs-5 amount text-right">
+                                        $ {{order.book.price}}
+                                    </div>
+                                {% endfor %}
+							</div>
+						</div>
+						<div class="total text-right">
+							<p class="extra-notes">
+								<strong>Extra Notes</strong>
+								Please note that all items will be send at <strong>{{address.date_delivery}}</strong> to shipping address.
+								Thanks a lot.
+							</p>
+							<div class="field">
+								Subtotal <span>${{bill.total}}</span>
+							</div>
+							<div class="field">
+								Shipping <span>$0.00</span>
+							</div>
+							<div class="field">
+								Discount <span>$0</span>
+							</div>
+							<div class="field grand-total">
+								Total <span>${{bill.total}}</span>
+							</div>
+						</div>
+
+						<div class="print">
+							<a href="#">
+								<i class="fa fa-print"></i>
+								Finish Review
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="footer">
+					Copyright © 2014. company name
+				</div>
+			</div>
+		</div>
+	</div>
+</div>                    
+    
+</body>
+</html>

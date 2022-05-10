@@ -156,16 +156,12 @@ def CheckOut(request):
     products = Order.objects.filter(~Q(bill = None)).aggregate(Count('quantity'))['quantity__count']
     x = Order.objects.filter(~Q(bill = None)).order_by('quantity').values_list('book__id')
     books = book.objects.filter(id__in = x )
-
-
-    
     contexts = {
         'bills':bills,
         'totals':totals,
         'products':products,
         'books':books
     }
-
     return render(request,'checkOut.html',contexts)
 
 
@@ -186,12 +182,11 @@ def CreateAddress(request):
             
             totals = items.aggregate(total_group=Sum(F('quantity')*F('book__price'), output_field=FloatField()))
             
-            print(totals['total_group'])
-            
-            
-            
+            bill.is_confirmed = True
             bill.total = totals['total_group']
             bill.save(update_fields=["total"])
+            bill.save(update_fields=["is_confirmed"])
+
             items.update(bill = bill)
             return redirect('home')
     else:
@@ -212,9 +207,6 @@ def CreatePayment(request):
             payment.save()
         return redirect('assignAddress')
     else:
-
-
-
         bill = Bill.objects.create(user = request.user)
         payment = Payment.objects.get(bill = bill)
         form = PaymentDetails(instance = payment)
@@ -242,4 +234,14 @@ def sendEmail(user, num, email):
     email.fail_silently = False
     email.send()
 
-
+def BillDetails(request,id = None):
+    bill = Bill.objects.get(id = id)
+    orders = Order.objects.filter(bill__id = id)
+    addres = address.objects.get(bill__id = id)
+    payment  = Payment.objects.get(bill__id = id)
+    return render(request, 'BillDetails.html',{
+        'bill':bill,
+        'orders':orders,
+        'address':addres, 
+        'payment':payment
+    })

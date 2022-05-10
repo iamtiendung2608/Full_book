@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import homepage, details,addToCart,TagDetails,AddBook,EditBook,DeleteBook,CheckOut,CreateAddress,CreatePayment, callEmail, AddTag, EditTag
+from .views import homepage, details,addToCart,TagDetails,AddBook,EditBook,DeleteBook,CheckOut,CreateAddress,CreatePayment, callEmail, AddTag, EditTag, BillDetails
 
 urlpatterns = [
     path('',homepage,name='home'),
@@ -8,6 +8,7 @@ urlpatterns = [
     path('bill/address', CreateAddress,name='assignAddress'),
     path('bill/payment', CreatePayment,name='assignPayment'),
     path('bill/confirm', callEmail,name='assignConfirm'),
+    path('bill/details/<int:id>', BillDetails ,name='billDetails'),
     path('tag/<int:id>',TagDetails ,name='tag'),
     path('tag/add',AddTag ,name='Addtag'),
     path('tag/edit/<int:id>',EditTag ,name='Edittag'),

@@ -96,7 +96,9 @@ def UserProfile(request):
         else:
             return redirect('userDetails')
     form = DetailsForm(instance = details)
-    bills = Bill.objects.filter(user = request.user)
+    filter1 = Q(user=request.user)
+    filter2 = Q(is_confirmed = True)
+    bills = Bill.objects.filter(filter1 & filter2)
     return render(request,'userDetails.html',{
         'form':form,
         'pic':details.profile_pic,

@@ -33,6 +33,7 @@ class Bill(models.Model):
 
 
 
+
 class Order(models.Model):
     account = models.ForeignKey(User, null=True,on_delete=models.CASCADE)
     book = models.ForeignKey(book, null=True,on_delete=models.CASCADE)

@@ -28,6 +28,8 @@ class address(models.Model):
     Details = models.CharField(max_length=50,null=True)
     date_delivery = models.DateField(null=True)
     def __str__(self):
+        if self is None:
+            return self.pk
         return self.Details
 
 
@@ -40,5 +42,7 @@ class Payment(models.Model):
     ExpirationYear = models.DecimalField(default = 2022,max_digits =5, decimal_places=0)
     SecurityCode = models.CharField(max_length = 5,null=True)
     def __str__(self):
+        if self is None:
+            return self.pk
         return self.CardNumber
 

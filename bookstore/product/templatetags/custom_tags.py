@@ -10,12 +10,12 @@ def has_group(user, group_name):
     group = Group.objects.get(name= group_name)
     return True if group in user.groups.all() else False
 
-@register.filter(name='get_address')
+@register.simple_tag
 def get_address(bill):
     ele = address.objects.get(bill = bill)
-    return ele
+    return {'address':ele}
 
-@register.filter(name='get_payment')
+@register.simple_tag
 def get_payment(bill):
     payment = Payment.objects.get(bill = bill)
-    return payment
+    return {'payment': payment}

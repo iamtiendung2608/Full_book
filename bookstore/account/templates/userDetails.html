@@ -19,7 +19,7 @@
           <div class="card">
             <div class="card-body">
               <div class="d-flex flex-column align-items-center text-center">
-                <img src="{{pic.url}}" alt="Admin" class="rounded-circle p-1 bg-primary" width="110">
+                <img src="{{pic.url}}" alt="Admin" class="rounded-circle p-1 bg-primary" height="110" width="110">
                 <div class="mt-3">
                   <h4>{{form.firstName.value}} {{form.lastName.value}}</h4>
                   <p class="text-secondary mb-1">Full Stack Developer</p>
@@ -127,8 +127,8 @@
 																	<tr>
 																		<th><span>Created</span></th>
 																		<th><span>Total</span></th>
-																		<th>Address</th>
-																		<th>Payment</th>
+																		<th>Status</th>
+																		<th>Details</th>
 																	</tr>
 																</thead>
 																<tbody>
@@ -136,14 +136,11 @@
                                     <tr>
                                       <td>{{bill.date_created}}</td>
                                       <td class="text-center">
-                                        <span class="label label-danger">{{bill.total}}</span>
+                                        <span class="label label-danger">{{bill.total}} $</span>
                                       </td>
+                                      <td style="color: green; text-align: center"><i class="fa fa-check" aria-hidden="true"></i></td>
                                       <td>
-                                        <a href="#">{{ bill|get_address }}</a>
-                                      </td>
-                                      <td>
-                                        {% comment %} <a href	="#"class="btn btn-success">alo</a> {% endcomment %}
-                                        {{ bill |  get_payment }}
+                                        <a href="{% url 'billDetails' bill.id%}">View Details</a>
                                       </td>
                                     </tr>
                                   {% endfor %}
@@ -206,4 +203,5 @@
     </div>
   </div>
 </body> {% endcomment %}
+
 {% endblock content %}
