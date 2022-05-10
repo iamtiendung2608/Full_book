@@ -4,7 +4,7 @@ from django.shortcuts import render
 from .form import CreateUserFrom,DetailsForm
 from django.contrib import messages
 from django.shortcuts import redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth import authenticate,login, logout
 from .decorators import unauthenticated_user
 from django.contrib.auth.models import Group
@@ -66,22 +66,28 @@ def Cart(request):
     })
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_role=['customer'])
-def MoreItems(request, id = None):
-    order = Order.objects.filter(id=id)
-    order.update(quantity = F('quantity')+1)
-    return redirect('cart')
+
+
 
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
-def RemoveItems(request, id = None):
-    order = Order.objects.filter(id=id)
-    if(order.values().quantity==1):
-        order.delete()
-    else:
-        order.update(quantity = F('quantity')-1)
-    return redirect('cart')
+def ChangeItems(request, id = None):
+
+    filter1 = Q(account = request.user)
+    filter2 = Q(bill = None)
+    filter3 = Q(id = id)
+
+    order = Order.objects.get(filter1 & filter2 & filter3)
+    
+    order.quantity = int(request.GET.get('quantity'))
+
+    order.save(update_fields=["quantity"])
+
+    return JsonResponse({'data':None}, status = 200)
+
+
+
+
 
 
 @login_required(login_url='login')
