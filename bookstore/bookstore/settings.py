@@ -34,14 +34,13 @@ INSTALLED_APPS = [
 
     'account.apps.AccountConfig',
     'product.apps.ProductConfig',
+    'chat.apps.ChatConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    'chat',
     'mathfilters'
 ]
 ASGI_APPLICATION = 'bookstore.asgi.application'

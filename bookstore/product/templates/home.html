@@ -12,6 +12,7 @@
 </head>
 <body>
     
+    
 <div class="container bootdey">
     <div class="col-md-3">
         <section class="panel">
@@ -80,7 +81,7 @@
                           <li ><a target="_blank" rel="noopener noreferrer" href="{% url 'profile' %}"><i class="fa fa-user" aria-hidden="true"></i>   {{request.user.username}}</a></li>
                           <li ><a target="_blank" rel="noopener noreferrer" href="account/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i>   cart   {{count}}</a></li>
                         {% endif %}
-                        <li ><a target="_blank" rel="noopener noreferrer" href="/user/chat"><i class="fa fa-comment" aria-hidden="true"></i></a></li>
+                        {% comment %} <li><a target="_blank" rel="noopener noreferrer" href="/user/chat"><i class="fa fa-comment" aria-hidden="true"></i></a></li> {% endcomment %}
                     {% endif %}
                     </li>
                       {% if request.user.is_authenticated %}
@@ -152,6 +153,7 @@
             {%endfor%}
         </div>
     </div>
+    
 </div>
 <script>
     $(document).ready(function(){
@@ -197,6 +199,9 @@
         });
     }
 </script> 
+{% if request.user.is_authenticated %}
+            {% include "chat/lobby.html" %}
+{% endif %}
 {% include "baseFooter.html" %}
 
 </body>
