@@ -1,7 +1,8 @@
 {% extends 'baseCheckOut.html' %}
 {% load static %}
 {% block content %}
-<div class="content-panel">
+
+<div class="content-panel" style="position:relative;">
     <h2 class="title">Billing</h2>
     <div class="billing">
         <div class="secure text-center margin-bottom-md">
@@ -16,27 +17,27 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">Name on Card</label>
                 <div class="col-sm-9">
-                    <input name="{{form.name.name}}"  type="text" class="form-control" placeholder="Your name">
+                    <input name="{{form.name.name}}"  type="text" class="form-control" placeholder="Your name" required>
                     <p class="help-block">As it appears on the card</p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">Card Number </label>
                 <div class="col-sm-9">
-                    <input name="{{form.CardNumber.name}}"  type="text" class="form-control" placeholder="••••  ••••  ••••  ••••">
+                    <input name="{{form.CardNumber.name}}"  type="text" class="form-control" required placeholder="••••  ••••  ••••  ••••">
                     <p class="help-block">The 16 digits on the front of your credit card.</p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">Expiration Date</label>
                 <div class="col-sm-9 form-inline">
-                    <select class="form-control" name="{{form.ExpirationMonth.name}}" >
+                    <select required class="form-control" name="{{form.ExpirationMonth.name}}" >
                         {% for choice in form.ExpirationMonth.field.choices %}
                             <option value="{{ choice.0 }}">{{ choice.1 }}</option>
                         {% endfor %}
                     </select>
                     <span class="divider">/</span>
-                    <select class="form-control" name="{{form.ExpirationYear.name}}" >
+                    <select required class="form-control" name="{{form.ExpirationYear.name}}" >
                         {% for choice in form.ExpirationYear.field.choices %}
                             <option value="{{ choice.0 }}">{{ choice.1 }}</option>
                         {% endfor %}
@@ -47,7 +48,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">Security Code</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control"  style="width: 120px;" placeholder="CVC" name="{{form.SecurityCode.name}}" >
+                    <input required type="text" class="form-control"  style="width: 120px;" placeholder="CVC" name="{{form.SecurityCode.name}}" >
                     <p class="help-block">The last 3 digits displayed on the back of your credit card.</p>
                 </div>
             </div>
@@ -66,6 +67,8 @@
         </form>
     </div>
 </div>
+
+
 
 {% endblock content %}
 

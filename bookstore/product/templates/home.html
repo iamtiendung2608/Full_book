@@ -4,6 +4,9 @@
 <html lang="en">
     <head>
         <title>Document</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="{% static 'css/home.css'%}">
         <link rel="stylesheet" href="{% static 'css/slide.css'%}">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -141,7 +144,7 @@
                     </div> 
                     <div class="panel-body text-center">
                         <h4>
-                            <a style="text-decoration: none;" href="product/{{item.id}}" class="pro-title">
+                            <a style="text-decoration: none;" href="{% url 'details' item.id %}" class="pro-title">
                                 {{item.name}}
                             </a>
                         </h4>
@@ -153,7 +156,6 @@
             {%endfor%}
         </div>
     </div>
-    
 </div>
 <script>
     $(document).ready(function(){

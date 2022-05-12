@@ -29,7 +29,6 @@
         -webkit-box-shadow: 4px 4px 4px #000;
         -moz-box-shadow: 4px 4px 4px #000;
     }
-
 </style>
 </head>
 <body>
@@ -84,17 +83,19 @@
     function callAjax(link,value,price){
         $.ajax({
             type: "GET",
-            url: `cart/change/${link}`, 
+            url: `cart/change/${link}`,
             data: {
                 'quantity': value
             },
             success: function(response){
-                jQuery(document.body).append("<div class='push-notification' id='notification'>Save Change!!!</div>");
+                totals = parseInt($('#strong').text());
+                totals += (value - current)*price;
+                if(value!=current){
+                    jQuery(document.body).append("<div class='push-notification' id='notification'>Save Change!!!</div>");
                     jQuery('#notification').show().fadeOut(2000, function () {
                         jQuery('#notification').remove();
                     });
-                totals = parseInt($('#strong').text());
-                totals += (value - current)*price;
+                }
                 $('#strong').text(totals);
             },
             error:function(){
