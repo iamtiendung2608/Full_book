@@ -1,15 +1,9 @@
-let current = '';
-
-
     function OTPInput() {
-        callCode();
         const inputs = document.querySelectorAll('#otp > *[id]');
         for (let i = 0; i < inputs.length; i++) {
             inputs[i].addEventListener('keydown', function (event) { 
-                if (event.key === "Backspace") { 
+                if (event.key === "Backspace") {
                     inputs[i].value = ''; 
-                    if (i !== 0) 
-                        inputs[i - 1].focus(); 
                 }
                 else {
                     if (i === inputs.length - 1 && inputs[i].value !== ''){
@@ -31,6 +25,7 @@ let current = '';
     }
     
 function Open() {
+    callCode();
     document.getElementById('verify').classList.remove("pop-up-off");
     OTPInput();
 }
@@ -42,10 +37,30 @@ function callCode(){
         data: {
         },
         success: function(response){
-            console.log(response.code);
+            $('#code').text(response.code);
         },
         error: function () {
             console.log("error");
         }
     });
+}
+
+function validate(){
+    var value = '';
+    const inputs = document.querySelectorAll('#otp > *[id]');
+    for (let i = 0; i < inputs.length; i++){
+        value += inputs[i].value;
+    }
+    var code = $('#code').text();
+    if(code != value){
+        window.alert("Invalid code! ");
+    }
+    else{
+        jQuery(document.body).append("<div class='push-notification' id='notification'>Confirm Success!</div>");
+        jQuery('#notification').show().fadeOut(2000, function () {
+            jQuery('#notification').remove();
+        });
+        document.getElementById('verify').classList.add("pop-up-off");
+        $('#btn-submit').prop('disabled',false);
+    }
 }

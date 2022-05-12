@@ -29,7 +29,6 @@
         			</div>
         			<nav class="side-menu">
         				<ul class="nav">
-
                             <li><a href="{% url 'home'%}"><span class="fa fa-home"></span> Home</a></li>
 							{% if request.user|has_group:"admin" %}
 								<li><a href="{% url 'adminAdd' %}"><span class="fa fa-book"></span> Add Book</a></li>

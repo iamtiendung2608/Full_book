@@ -41,7 +41,8 @@ def loginPage(request,template='account/templates'):
         user = authenticate(request,username = username, password=password)
         if user is not None:
             login(request,user)
-            return redirect('home')
+            redirect_to = request.POST.get('next', request.GET.get('next', 'home') if not None else 'home' )
+            return redirect(redirect_to)
         else:
             messages.info(request,'username or password is incorrect')
             return redirect('login')

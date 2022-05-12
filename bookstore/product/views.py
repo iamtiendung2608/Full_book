@@ -83,7 +83,6 @@ def TagDetails(request, id = None):
     })
 
 
-
 @login_required(login_url='login')
 @allowed_users(allowed_role=['admin'])
 def AddBook(request):
@@ -141,26 +140,38 @@ def EditTag(request, id = None):
 
 
 
-
+#need html to access this function
 @login_required(login_url='login')
 @allowed_users(allowed_role=['admin'])
 def DeleteBook(request, id = None):
     item = book.objects.get(id=id).delete()
     return HttpResponseRedirect('/')
 
+
+
 @login_required(login_url='login')
 @allowed_users(allowed_role=['admin'])
 def CheckOut(request):
-    bills = Bill.objects.count()
+
+
+    bills = Bill.objects.filter(~Q(total = 0)).count()
+    
+    #get all purchase
     totals = Bill.objects.all().aggregate(Sum('total'))['total__sum']
+
+    #get all orders
     products = Order.objects.filter(~Q(bill = None)).aggregate(Count('quantity'))['quantity__count']
+    
+
+    
     x = Order.objects.filter(~Q(bill = None)).order_by('quantity').values_list('book__id')
-    books = book.objects.filter(id__in = x )
+    books = book.objects.filter( id__in = x )
+    print(type(books))
     contexts = {
         'bills':bills,
         'totals':totals,
         'products':products,
-        'books':books
+        'books':books,
     }
     return render(request,'checkOut.html',contexts)
 
@@ -177,7 +188,7 @@ def CreateAddress(request):
             addressDetails.save()
             filter1 = Q(account = request.user)
             filter2 = Q(bill = None)
-
+            
             items = Order.objects.filter(filter1 & filter2)
             
             totals = items.aggregate(total_group=Sum(F('quantity')*F('book__price'), output_field=FloatField()))

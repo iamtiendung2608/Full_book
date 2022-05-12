@@ -1,5 +1,7 @@
 {% load static %}
-
+<meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <br>
 <link rel="stylesheet" href="{% static '/css/status.css' %}">
 <div class="row">
@@ -7,7 +9,7 @@
 		<div class="col-md">
 			<div class="card text-center text-white  mb-3" id="total-orders">
 			  	<div class="card-header">
-			  		<h5 class="card-title">Total Orders</h5>
+			  		<h5 class="card-title">Quantities</h5>
 			  	</div>
 			  	<div class="card-body">
 			    	<h3 class="card-title">{{products}}</h3>
@@ -31,7 +33,7 @@
 		<div class="col-md">
 			<div class="card text-center text-white  mb-3" id="orders-pending">
 			  	<div class="card-header">
-			  		<h5 class="card-title">Quantities</h5>
+			  		<h5 class="card-title">Deals</h5>
 			  	</div>
 			  	<div class="card-body">
 			    	<h3 class="card-title">{{bills}}</h3>
