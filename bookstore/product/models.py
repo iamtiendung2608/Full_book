@@ -16,7 +16,7 @@ class book(models.Model):
     image = models.TextField()
     author = models.CharField(max_length=30,null=True)
     describe = models.TextField(null=True)
-    tag = models.ManyToManyField(tag)
+    Title = models.ForeignKey(tag, null=True, on_delete=models.SET_NULL)
     def __str__(self):
         return self.name
 
@@ -30,8 +30,6 @@ class Bill(models.Model):
         return self.user.username + " bill "+str(self.date_created)
     class Meta:
         unique_together = (('id','date_created'),)
-
-
 
 
 class Order(models.Model):

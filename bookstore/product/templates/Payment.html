@@ -12,20 +12,20 @@
                     <small>This is a secure 128-bit SSL encrypted payment</small>
                 </h3>
         </div>
-        <form id="billing" class="form-horizontal" method="post" action="" role="form">
+        <form onsubmit="return false();" id="billing" class="form-horizontal" method="post" action="" role="form">
             {% csrf_token %}
             <div class="form-group">
                 <label class="col-sm-3 control-label">Name on Card</label>
                 <div class="col-sm-9">
                     <input name="{{form.name.name}}"  type="text" class="form-control" placeholder="Your name" required>
-                    <p class="help-block">As it appears on the card</p>
+                    <p style="color:red" class="help-block" id="name"></p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Card Number </label>
+                <label class="col-sm-3 control-label">Card Number</label>
                 <div class="col-sm-9">
-                    <input name="{{form.CardNumber.name}}"  type="text" class="form-control" required placeholder="••••  ••••  ••••  ••••">
-                    <p class="help-block">The 16 digits on the front of your credit card.</p>
+                    <input onchange="validate('Card Number must have 16 digits',this.value, 16,'CardNumber')" name="{{form.CardNumber.name}}"  type="text" class="form-control" required placeholder="••••  ••••  ••••  ••••">
+                    <p style="color:red" class="help-block" id="CardNumber"></p>
                 </div>
             </div>
             <div class="form-group">
@@ -42,14 +42,13 @@
                             <option value="{{ choice.0 }}">{{ choice.1 }}</option>
                         {% endfor %}
                     </select>
-                    <p class="help-block">The date your credit card expires. Find this on the front of your credit card.</p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">Security Code</label>
                 <div class="col-sm-9">
-                    <input required type="text" class="form-control"  style="width: 120px;" placeholder="CVC" name="{{form.SecurityCode.name}}" >
-                    <p class="help-block">The last 3 digits displayed on the back of your credit card.</p>
+                    <input onchange="validate('Security Code must have 3 digits long',this.value,3,'securityCode')" required type="text" class="form-control"  style="width: 120px;" placeholder="CVC" name="{{form.SecurityCode.name}}" >
+                    <p style="color:red" class="help-block" id="securityCode"></p>
                 </div>
             </div>
             <hr>
@@ -58,8 +57,8 @@
                         You'll be charged <span class="text-stronger">$99/year</span> 
                     </h4>
                 <div class="action-btn">
-                    <button class="btn btn-success btn-lg">
-                        Make Payment
+                    <button onclick="" class="btn btn-success btn-lg">
+                        Next Step
                         <i class="fa fa-chevron-right"></i>
                     </button>
                 </div>
@@ -68,6 +67,36 @@
     </div>
 </div>
 
+<script>
+    function validate(message, input, length, id){
+        if(input.length != length){
+            document.getElementById(id).innerHTML=message;
+        }
+        else{
+            document.getElementById(id).innerHTML='';
+        }
+    }
+    function submit(){
+        var ele = document.getElementsByTagName('p');
+        event.preventDefault();
+        alert(ele.length());
+        for (let index = 0; index < ele.length; index++) {
+            const element = ele[index];
+            alert(element.innerHTML);
+            if( element.innerHTML ){
+                window.history.back();
+                return false;
+            }
+        }
+        return false;
+    }
+    // $( document ).ready(function() {
+    //     var c = $("#billing :input")
+    //     c.prop('disabled', true);
+    // });
+
+
+</script>
 {% endblock content %}
 
 

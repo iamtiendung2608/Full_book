@@ -64,3 +64,13 @@ function validate(){
         $('#btn-submit').prop('disabled',false);
     }
 }
+
+function CheckValid(message, input, id){
+    console.log(typeof(input));
+    if(!input){
+        document.getElementById(id).innerHTML=message;
+    }
+    else{
+        document.getElementById(id).innerHTML='';
+    }
+}

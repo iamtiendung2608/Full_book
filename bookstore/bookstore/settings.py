@@ -31,8 +31,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bookstore.settings')
 
 INSTALLED_APPS = [
     'channels',
-
     'account.apps.AccountConfig',
+    'adminAPI.apps.AdminapiConfig',
     'product.apps.ProductConfig',
     'chat.apps.ChatConfig',
     'django.contrib.admin',
