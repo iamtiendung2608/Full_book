@@ -5,32 +5,34 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
 
-<div class="portlet-body">
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Price</th>
-				<th>Character</th>
-				<th>View API</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for ele in books %}
-			<tr>
-				<td>{{ele.name}}</td>
-				<td>$ {{ele.price}}</td>
-				<td>{{ele.Title.fullName}}</td>
-				<th><button onclick="callAPI('{{ele.Title.fullName}}')" class="btn btn-success">View API</button></th>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+<div class="portlet-body container">
+	<div class="row">
+		<div class="col-md-7">
+			<img class="float-right" src="data:image/png;base64,{{ graphic|safe }}">
+		</div>
+		<div class="col-md-5" >
+			<table class="table" >
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Character</th>
+						<th>View API</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					{% for ele in books %}
+					<tr>
+						<td>{{ele.name}}</td>
+						<td>{{ele.Title.fullName}}</td>
+						<td><button onclick="callAPI('{{ele.Title.fullName}}')" class="btn btn-success">View API</button></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
-
-
-
-
 
 
 <script>

@@ -23,8 +23,9 @@ import requests
 import matplotlib.pyplot as plt
 import numpy as np
 from bs4 import BeautifulSoup
-
-
+from collections import defaultdict
+import matplotlib
+matplotlib.use('Agg')
 @login_required(login_url='login')
 @allowed_users(allowed_role=['admin']) 
 def AddBook(request):
@@ -108,13 +109,14 @@ def CheckOut(request):
     
 
     
-    x = Order.objects.filter(~Q(bill = None)).order_by('quantity').values_list('book__id')
+    x = Order.objects.filter(~Q(bill = None)).order_by('-quantity')
 
-    books = book.objects.filter( id__in = x )
 
-    name = process(list(books),list(x))
-    graphic = graphics(name, list(x))
-    # process(books ,x)
+    books = book.objects.filter( id__in = x.values_list('book__id', flat=True) )
+
+
+    values, names = merge_slices(x.values_list('quantity', flat=True),list(books.values_list('Title__fullName',flat=True)))
+    graphic = graphics(values, names)
     contexts = {
         'bills':bills,
         'totals':totals,
@@ -125,15 +127,11 @@ def CheckOut(request):
     return render(request,'checkOut.html',contexts)
 
 
-def process(names , values):
-    name = []
-    [*value] = values
-    for e in names:
-        name.append(str(e))
-    
-    print(value)
-    return name    
-
+def merge_slices(list0, list1):
+    dict_slices = defaultdict(lambda: 0)
+    for val, title in zip(list0, list1):
+        dict_slices[title] += val
+    return list(dict_slices.values()), list(dict_slices.keys())
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
@@ -148,8 +146,6 @@ def TikiAPI(request):
         return JsonResponse({
             'data':data
         }, status=200)
-
-
 
 def Scrap(urls):
     headers = {
@@ -175,19 +171,13 @@ def Scrap(urls):
 
 
 def graphics(name, value):
-
-    print(name)
-    print(value)
-    y = np.array([35, 25, 25, 15])
-    mylabels = ["Apples", "Bananas", "Cherries", "Dates"]
-    plt.pie(y, labels = mylabels)
-
+    plt.pie(name, labels = value, autopct='%1.0f%%', pctdistance=1.1, labeldistance=1.2)
+    plt.title('Trending book title tag')
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
     image_png = buffer.getvalue()
     buffer.close()
-
     graphic = base64.b64encode(image_png)
     graphic = graphic.decode('utf-8')
     return graphic
