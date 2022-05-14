@@ -111,23 +111,31 @@ def CheckOut(request):
     
     x = Order.objects.filter(~Q(bill = None)).order_by('-quantity')
 
+    books = []
+    for i in x.values_list('book__name', flat=True):
+        books.append(book.objects.get(name = i))
+    
 
-    books = book.objects.filter( id__in = x.values_list('book__id', flat=True) )
+    print(books)
 
-
-    values, names = merge_slices(x.values_list('quantity', flat=True),list(books.values_list('Title__fullName',flat=True)))
+    values, names = merge_slices(x.values_list('quantity', flat=True), books)
     graphic = graphics(values, names)
     contexts = {
         'bills':bills,
         'totals':totals,
         'products':products,
-        'books':books,
+        'books':books[:5],
         'graphic':graphic
     }
     return render(request,'checkOut.html',contexts)
 
 
 def merge_slices(list0, list1):
+    # print(list0)
+    # print(list1)
+
+
+
     dict_slices = defaultdict(lambda: 0)
     for val, title in zip(list0, list1):
         dict_slices[title] += val
@@ -171,8 +179,18 @@ def Scrap(urls):
 
 
 def graphics(name, value):
-    plt.pie(name, labels = value, autopct='%1.0f%%', pctdistance=1.1, labeldistance=1.2)
+
+
+
     plt.title('Trending book title tag')
+    plt.ylabel("")
+    pie = plt.pie(name, autopct='%1.0f%%', pctdistance=1.1, labeldistance=1.2, startangle=0)
+    # plt.legend(loc = 3, labels = value)
+    plt.legend(pie[0],value, bbox_to_anchor=(1.03,0.2), loc="center right", fontsize=10, 
+           bbox_transform=plt.gcf().transFigure)
+
+
+
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)

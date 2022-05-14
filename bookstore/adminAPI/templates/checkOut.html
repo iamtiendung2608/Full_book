@@ -7,10 +7,10 @@
 
 <div class="portlet-body container">
 	<div class="row">
-		<div class="col-md-7">
+		<div class="col-md-5">
 			<img class="float-right" src="data:image/png;base64,{{ graphic|safe }}">
 		</div>
-		<div class="col-md-5" >
+		<div style="border: 2px solid red; border-radius: 25px;" class="col-md-7" >
 			<table class="table" >
 				<thead>
 					<tr>
@@ -45,7 +45,9 @@
 			},
 			success: function(response){
 				$('#apiBody').empty();
+				console.log(response.data);
 				for(let i = 0; i < response.data.length; i++){
+					
 					$('#apiBody').append(`
 						<tr>
 							<td>
