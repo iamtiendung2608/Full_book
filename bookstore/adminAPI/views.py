@@ -114,11 +114,10 @@ def CheckOut(request):
     books = []
     for i in x.values_list('book__name', flat=True):
         books.append(book.objects.get(name = i))
+        
     
 
-    print(books)
-
-    values, names = merge_slices(x.values_list('quantity', flat=True), books)
+    values, names = merge_slices(x.values_list('quantity', flat=True), x.values_list('book__Title__fullName', flat=True))
     graphic = graphics(values, names)
     contexts = {
         'bills':bills,

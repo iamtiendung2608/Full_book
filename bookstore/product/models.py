@@ -7,7 +7,7 @@ class tag(models.Model):
     fullName = models.CharField(max_length = 20,null=True)
     describe = models.TextField(null=True)
     def __str__(self):
-        return self.name
+        return self.fullName
 
 # Create your models here.
 class book(models.Model):
