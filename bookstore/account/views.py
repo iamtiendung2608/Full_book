@@ -27,7 +27,7 @@ def registPage(request,template='account/templates'):
             user.groups.add(group)
             return HttpResponseRedirect('login')
         else:
-            messages.error(request,form.error_messages)
+            messages.error(request,form.errors.as_data())
             return redirect('regist')
     form = CreateUserFrom()
     context = {'form':form}
@@ -90,7 +90,6 @@ def ChangeItems(request, id = None):
 
 
 
-
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
 def UserProfile(request):
@@ -111,8 +110,5 @@ def UserProfile(request):
         'pic':details.profile_pic,
         'bills': bills,
     })
-@login_required(login_url='login')
-@allowed_users(allowed_role=['customer'])
-def CartDelete(request, id = None):
-    pass
+
     

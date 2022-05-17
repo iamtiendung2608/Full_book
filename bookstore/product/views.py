@@ -20,6 +20,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 import re
 from django.core import serializers
+from django.contrib import messages
 
 def homepage(request):
     tags = tag.objects.all()
@@ -50,8 +51,8 @@ def callEmail(request):
 
 def details(request, id = None):
     context = book.objects.get(id=id)
-    tags = book.objects.filter(id=id).values_list('tag')
-    books = book.objects.filter(tag__id__in =  tags).distinct()
+    tags = book.objects.filter(id=id).values_list('Title')
+    books = book.objects.filter(Title =  context.Title).distinct().exclude(id = id)
     return render(request,'details.html',{
         'context': context,
         'books':books
@@ -75,7 +76,7 @@ def addToCart(request,id=None):
 
 
 def TagDetails(request, id = None):
-    items = book.objects.filter(tag__id = id)
+    items = book.objects.filter(Title__id = id)
     tags = tag.objects.all()
     return render(request,'home.html',{
         'contexts': items,
@@ -105,6 +106,7 @@ def CreateAddress(request):
             bill.save(update_fields=["is_confirmed"])
 
             items.update(bill = bill)
+            messages.success(request,'Thank you for your payment')
             return redirect('home')
     else:
         form = AddressDetails(instance = ele)

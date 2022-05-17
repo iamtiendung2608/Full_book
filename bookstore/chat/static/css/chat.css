@@ -9,24 +9,18 @@
     
     .popup-head-left.pull-left h1 {
         color: #fff;
-        float: left;
         font-family: oswald;
         font-size: 18px;
-        margin: 2px 0 0 5px;
        
     }
     .popup-head-left a small {
         display: table;
         font-size: 11px;
         color: #fff;
-        line-height: 4px;
         opacity: 0.5;
-        padding: 0 0 0 7px;
     }
     .chat-header-button {
         background: transparent none repeat scroll 0 0;
-        border: 1px solid #fff;
-        border-radius: 7px;
         font-size: 15px;
         height: 26px;
         opacity: 0.9;
@@ -35,20 +29,17 @@
         width: 26px;
     }
     .popup-head {
-        background: #304445 none repeat scroll 0 0 !important;
-        border-bottom: 3px solid #ccc;
+        background: #3cff01 none repeat scroll 0 0 !important;
         color: #fff;
         display: table;
         width: 100%;
-        padding: 8px;
+        padding: 12px;
     }
     .popup-head {
-        border: 2px solid #5a7172;
-        border-radius: 12px;
         float: left;
     }
     .chat_box_wrapper.chat_box_small.chat_box_active {
-        height: 342px;
+        height: 200px;
         overflow-y: scroll;
         width: 316px;
     }

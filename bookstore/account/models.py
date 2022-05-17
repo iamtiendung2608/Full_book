@@ -18,7 +18,6 @@ class UserDetails(models.Model):
         return self.user.username +' Profile'
     def save(self,*args, **kwargs):
         super(UserDetails, self).save(*args, **kwargs)
-  
 
 class address(models.Model):
     bill = models.ForeignKey(Bill,null=True, blank=True, on_delete = models.CASCADE)
