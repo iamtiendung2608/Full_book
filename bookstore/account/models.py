@@ -22,8 +22,11 @@ class UserDetails(models.Model):
 class address(models.Model):
     bill = models.ForeignKey(Bill,null=True, blank=True, on_delete = models.CASCADE)
 
-    Province =models.CharField(max_length =30,null=True)
-    City = models.CharField(max_length=30,null= True)
+    Province =models.CharField(max_length = 30,null=True)
+    City = models.CharField(max_length= 30,null= True)
+    Ward = models.CharField(max_length = 30 ,null = True)
+
+
     Details = models.CharField(max_length=50,null=True)
     date_delivery = models.DateField(null=True)
    

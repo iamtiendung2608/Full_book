@@ -24,7 +24,6 @@ class book(models.Model):
 class Bill(models.Model):
     user = models.ForeignKey(User,null=True,on_delete=models.CASCADE,blank=True)
     date_created = models.DateTimeField(auto_now= True, null=True)
-    is_confirmed = models.BooleanField(default = False)
     total = models.FloatField(default=0.0000)
     def __str__(self):
         return self.user.username + " bill "+str(self.date_created)

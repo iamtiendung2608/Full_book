@@ -23,6 +23,8 @@
 </style>
 <link rel="stylesheet" href="{% static 'css/verify.css'%}">
 <script src="{% static 'js/verify.js' %}"></script>
+<script src="{% static 'js/vietnamlocalselector.js' %}"></script>
+
 <div class="content-panel">
     <h2 class="title">Address</h2>
     <div class="billing">
@@ -37,28 +39,38 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">Province: </label>
                 <div class="col-sm-9">
-                    <input onchange="CheckValid('Province must not be null', this.value, 'province')" name="{{form.Province.name}}"  type="text" class="form-control" placeholder="An Giang" required>
+                    <input name="{{form.Province.name}}" hidden id="provinceInput" type="text" class="form-control" placeholder="An Giang" >
+                    <select  onblur="Output('ls_province','provinceInput')" id="ls_province"  class ="form-control" name="ls_province"></select>
                     <p style="color:red" class="help-block" id="province" ></p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">City: </label>
                 <div class="col-sm-9">
-                    <input onchange="CheckValid('City must not be null', this.value, 'city')" name="{{form.City.name}}"  type="text" class="form-control" placeholder="Hanoi" required>
+                    <input hidden id="cityInput" name="{{form.City.name}}"  type="text" class="form-control" placeholder="Hanoi" >
+                    <select onblur="Output('ls_district', 'cityInput')" id="ls_district"   class ="form-control" name="ls_district"></select>
                     <p style="color:red" class="help-block" id="city"></p>
                 </div>
             </div>
             <div class="form-group">
+              <label class="col-sm-3 control-label">Ward: </label>
+              <div class="col-sm-9">
+                  <input id="wardInput" hidden name="{{form.Ward.name}}"  type="text" class="form-control" placeholder="Hanoi" >
+                  <select class="form-control" onblur="Output('ls_ward','wardInput' )" id="ls_ward"   name="ls_ward"></select>
+                  <p style="color:red" class="help-block" id="city"></p>
+              </div>
+          </div>
+            <div class="form-group">
                 <label class="col-sm-3 control-label">Details: </label>
                 <div class="col-sm-9 form-inline">
-                    <input onchange="CheckValid('Details must not be null', this.value, 'details')" name="{{form.Details.name}}"  placeholder ="01 Vo Van Ngan..." required  type="text" class="form-control">
+                    <input name="{{form.Details.name}}"  placeholder ="01 Vo Van Ngan..." required  type="text" class="form-control">
                     <p style="color:red" class="help-block" id="details"></p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">Date Delivery: </label>
                 <div class="col-sm-9 form-inline">
-                    <input onchange="CheckValid('Date must not be null', this.value, 'date')" name="{{form.date_delivery.name}}" type="date" required  class="form-control">
+                    <input  onchange="CheckValid('Date must not be null', this.value, 'date')" name="{{form.date_delivery.name}}" type="date" required  class="form-control">
                     <p style="color:red" class="help-block" id="date" ></p>
                 </div>
             </div>
@@ -112,6 +124,20 @@
     </div>
         </div>
 
+        <script>
+          var localpicker = new LocalPicker({
+            province: "ls_province",
+            district: "ls_district",
+            ward: "ls_ward"
+              });
+
+          function Output(id , inputID){
+             textInput = document.getElementById(inputID);
+             var e = document.getElementById(id);
+             var actualValue= e.options[e.selectedIndex].text;
+             textInput.value = actualValue;
+          }
+        </script>
 
 
 {% endblock content %}

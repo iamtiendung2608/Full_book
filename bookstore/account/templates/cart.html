@@ -41,7 +41,7 @@
             <a class="btn btn-success" href="{% url 'home' %}">Continue Shopping</a>
         {% else %}
         {% for item in items %}
-            <div class="cart-item d-md-flex justify-content-between"><span class="remove-item"><i class="fa fa-times"></i></span>
+            <div id="{{item.id}}" class="cart-item d-md-flex justify-content-between"><span class="remove-item"><i class="fa fa-times"></i></span>
                 <div class="px-3 my-3">
                     <a class="cart-item-product" href="{% url 'details' item.book.id  %}">
                         <div class="cart-item-product-thumb"><img src="{{item.book.image}}" alt="Product"></div>
@@ -81,6 +81,11 @@
 {% include "baseFooter.html" %}
 <script>
     function callAjax(link,value,price){
+        if(value == 0){
+            var choice = window.confirm('You want to delete this item?')
+            if(!choice)
+                return;
+        }
         $.ajax({
             type: "GET",
             url: `cart/change/${link}`,
@@ -88,6 +93,10 @@
                 'quantity': value
             },
             success: function(response){
+                if (value == 0){
+
+                }
+
                 totals = parseInt($('#strong').text());
                 totals += (value - current)*price;
                 if(value!=current){

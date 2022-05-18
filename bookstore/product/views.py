@@ -92,6 +92,7 @@ def CreateAddress(request):
     if request.method == 'POST':
         addressDetails = AddressDetails(request.POST, instance = ele)
         if addressDetails.is_valid():
+            print('address')
             addressDetails.save()
             filter1 = Q(account = request.user)
             filter2 = Q(bill = None)
@@ -100,10 +101,8 @@ def CreateAddress(request):
             
             totals = items.aggregate(total_group=Sum(F('quantity')*F('book__price'), output_field=FloatField()))
             
-            bill.is_confirmed = True
             bill.total = totals['total_group']
             bill.save(update_fields=["total"])
-            bill.save(update_fields=["is_confirmed"])
 
             items.update(bill = bill)
             messages.success(request,'Thank you for your payment')
