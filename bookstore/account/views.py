@@ -79,8 +79,13 @@ def ChangeItems(request, id = None):
     filter3 = Q(id = id)
 
     order = Order.objects.get(filter1 & filter2 & filter3)
-    
-    order.quantity = int(request.GET.get('quantity'))
+    value = int(request.GET.get('quantity'))
+
+    if value == 0:
+        order.delete()
+        return JsonResponse({'data':None}, status = 200)
+
+    order.quantity = value
 
     order.save(update_fields=["quantity"])
 

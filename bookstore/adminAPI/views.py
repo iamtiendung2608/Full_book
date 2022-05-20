@@ -143,6 +143,9 @@ def merge_slices(list0, list1):
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
+
+
+
 def TikiAPI(request):
     if is_ajax(request = request):
         subDomain = request.GET.get('value')

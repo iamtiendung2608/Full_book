@@ -12,7 +12,7 @@ class tag(models.Model):
 # Create your models here.
 class book(models.Model):
     name = models.CharField(max_length=50)
-    price = models.FloatField()
+    price = models.DecimalField(default = 1,max_digits = 10, decimal_places=0)
     image = models.TextField()
     author = models.CharField(max_length=30,null=True)
     describe = models.TextField(null=True)
@@ -24,7 +24,8 @@ class book(models.Model):
 class Bill(models.Model):
     user = models.ForeignKey(User,null=True,on_delete=models.CASCADE,blank=True)
     date_created = models.DateTimeField(auto_now= True, null=True)
-    total = models.FloatField(default=0.0000)
+    total = models.DecimalField(default = 0,max_digits = 9, decimal_places=0)
+    is_confirmed = models.BooleanField(default = False)
     def __str__(self):
         return self.user.username + " bill "+str(self.date_created)
     class Meta:

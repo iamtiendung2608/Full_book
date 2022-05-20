@@ -59,8 +59,6 @@ def details(request, id = None):
     })
 
 
-
-
 @login_required(login_url='login')
 @allowed_users(allowed_role=['customer'])
 def addToCart(request,id=None):
@@ -103,6 +101,9 @@ def CreateAddress(request):
             
             bill.total = totals['total_group']
             bill.save(update_fields=["total"])
+            bill.is_confirmed = True
+            bill.save(update_fields=["is_confirmed"])
+
 
             items.update(bill = bill)
             messages.success(request,'Thank you for your payment')
@@ -151,6 +152,7 @@ def sendEmail(user, num, email):
     )
     email.fail_silently = False
     email.send()
+
 
 def BillDetails(request,id = None):
     bill = Bill.objects.get(id = id)

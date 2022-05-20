@@ -1,4 +1,5 @@
 {% load static%}
+{% load humanize %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +22,7 @@
 					<div class="intro">
 						Hi <strong>{{request.user.UserDetails.firstName}}</strong>, 
 						<br>
-						This is the receipt for a payment of <strong>${{bill.total}}</strong> (USD) for your works
+						This is the receipt for a payment of <strong>{{bill.total}}</strong> (vnd) for your works
 					</div>
 					<div class="payment-info">
 						<div class="row">
@@ -79,7 +80,7 @@
                                         {{order.quantity}}
                                     </div>
                                     <div class="col-xs-5 amount text-right">
-                                        $ {{order.book.price}}
+                                         {{order.book.price|intcomma}} đ
                                     </div>
                                 {% endfor %}
 							</div>
@@ -91,16 +92,16 @@
 								Thanks a lot.
 							</p>
 							<div class="field">
-								Subtotal <span>${{bill.total}}</span>
+								Subtotal <span>{{bill.total|intcomma}} đ</span>
 							</div>
 							<div class="field">
-								Shipping <span>$0.00</span>
+								Shipping <span>0.00 đ</span>
 							</div>
 							<div class="field">
-								Discount <span>$0</span>
+								Discount <span>0 đ</span>
 							</div>
 							<div class="field grand-total">
-								Total <span>${{bill.total}}</span>
+								Total <span>{{bill.total|intcomma}} đ</span>
 							</div>
 						</div>
 
