@@ -7,10 +7,10 @@ class BookForm(ModelForm):
     image = forms.CharField(label='image', widget=forms.Textarea(attrs={'class':'form-control'}))
     author = forms.CharField(label='author', widget=forms.TextInput(attrs={'class':'form-control'}))
     describe = forms.CharField(label='describe', widget=forms.Textarea(attrs={'class':'form-control'}))
-    tag = forms.ModelChoiceField(label='tag',queryset=tag.objects.all())
+    Title = forms.ModelChoiceField(label='Title',queryset=tag.objects.all())
     class Meta:
         model = book
-        fields = ['name','price','image','author','describe','tag']
+        fields = ['name','price','image','author','describe','Title']
 
 
 class TagForm(ModelForm):

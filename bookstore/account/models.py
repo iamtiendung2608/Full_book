@@ -29,7 +29,7 @@ class address(models.Model):
 
     Details = models.CharField(max_length=50,null=True)
     date_delivery = models.DateField(null=True)
-   
+    
 
 
 class Payment(models.Model):

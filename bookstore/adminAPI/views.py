@@ -26,6 +26,12 @@ from bs4 import BeautifulSoup
 from collections import defaultdict
 import matplotlib
 matplotlib.use('Agg')
+
+
+
+
+
+
 @login_required(login_url='login')
 @allowed_users(allowed_role=['admin']) 
 def AddBook(request):
@@ -99,14 +105,14 @@ def DeleteBook(request, id = None):
 def CheckOut(request):
 
 
-    bills = Bill.objects.filter(~Q(total = 0)).count()
+    bills = Bill.objects.filter(is_confirmed = False).count()
     
     #get all purchase
     totals = Bill.objects.all().aggregate(Sum('total'))['total__sum']
 
     #get all orders
-    products = Order.objects.filter(~Q(bill = None)).aggregate(Count('quantity'))['quantity__count']
-    
+    # products = Order.objects.filter(~Q(bill = None)).values_list('quantity', flat=True)
+    # print(products)
 
     
     x = Order.objects.filter(~Q(bill = None)).order_by('-quantity')
@@ -117,12 +123,13 @@ def CheckOut(request):
         
     
 
-    values, names = merge_slices(x.values_list('quantity', flat=True), x.values_list('book__Title__fullName', flat=True))
+    values, names, quantities = merge_slices(x.values_list('quantity', flat=True), x.values_list('book__Title__fullName', flat=True))
+    # print(s)
     graphic = graphics(values, names)
     contexts = {
         'bills':bills,
-        'totals':totals,
-        'products':products,
+        'totals':int(totals),
+        'products':quantities,
         'books':books[:5],
         'graphic':graphic
     }
@@ -132,13 +139,14 @@ def CheckOut(request):
 def merge_slices(list0, list1):
     # print(list0)
     # print(list1)
-
+    sum = 0 
 
 
     dict_slices = defaultdict(lambda: 0)
     for val, title in zip(list0, list1):
         dict_slices[title] += val
-    return list(dict_slices.values()), list(dict_slices.keys())
+        sum+=val
+    return list(dict_slices.values()), list(dict_slices.keys()),sum
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'

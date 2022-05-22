@@ -37,7 +37,7 @@
       </style>
     
 <div class="container bootdey">
-    <div class="col-md-3">
+    <div  class="col-md-3">
         <section class="panel">
                 {% if request.user|has_group:"customer" %}
                     <div class="panel-body">
@@ -45,7 +45,7 @@
                     </div>
                 {% endif %}
         </section>
-        <section class="panel">
+        <section  class="panel">
             <header class="panel-heading">
                 Category
             </header>
@@ -213,7 +213,7 @@
     });
     function putElement(item,pk){
         ar = "'"+item.name+"'";
-        var ele = "<div class='col-md-4'><section class='panel'><div class='pro-img-box'><img src='"+item.image+"' /><button onclick='add_e( "+pk+", \"" + item.name.toString() + "\" )' class='adtocart'><i class='fa fa-shopping-cart'></i></button></div><div class='panel-body text-center'><h4><a style='text-decoration: none;' href='product/"+pk+"' class='pro-title'>"+item.name+"</a></h4><p class='price'>"+item.price.toString()+'$'+"</p></div></section></div><br>";
+        var ele = "<div class='col-md-4'><section class='panel'><div class='pro-img-box'><img src='"+item.image+"' /><button onclick='add_e( "+pk+", \"" + item.name.toString() + "\" )' class='adtocart'><i class='fa fa-shopping-cart'></i></button></div><div class='panel-body text-center'><h4><a style='text-decoration: none;' href='product/"+pk+"' class='pro-title'>"+item.name+"</a></h4><p class='price'>"+item.price.toString()+'vnd'+"</p></div></section></div><br>";
         return ele;
     }
     function add_e(id, message){

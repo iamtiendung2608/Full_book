@@ -30,7 +30,7 @@ def homepage(request):
         qs_json = serializers.serialize('json', data)
         return HttpResponse(qs_json, content_type='application/json')
     else:
-        context = book.objects.all()
+        context = book.objects.order_by('?')
     return render(request,'home.html',{
         'contexts': context,
         'tags':tags,
