@@ -109,7 +109,7 @@ def UserProfile(request):
     form = DetailsForm(instance = details)
     filter1 = Q(user=request.user)
     filter2 = Q(is_confirmed = True)
-    bills = Bill.objects.filter(filter1 & filter2)
+    bills = Bill.objects.filter(filter1 & filter2).order_by('-date_created')
     return render(request,'userDetails.html',{
         'form':form,
         'pic':details.profile_pic,

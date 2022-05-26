@@ -26,7 +26,6 @@ class address(models.Model):
     City = models.CharField(max_length= 30,null= True)
     Ward = models.CharField(max_length = 30 ,null = True)
 
-
     Details = models.CharField(max_length=50,null=True)
     date_delivery = models.DateField(null=True)
     

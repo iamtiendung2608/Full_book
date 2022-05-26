@@ -200,7 +200,6 @@
                 },
                 success: function(response){
                     $('#listProduct').empty();
-                    console.log(response)
                     for(let i = 0;i<response.length;i++){
                         var  k = putElement(response[i].fields,response[i].pk);
                         $('#listProduct').append(k);
@@ -213,7 +212,10 @@
     });
     function putElement(item,pk){
         ar = "'"+item.name+"'";
-        var ele = "<div class='col-md-4'><section class='panel'><div class='pro-img-box'><img src='"+item.image+"' /><button onclick='add_e( "+pk+", \"" + item.name.toString() + "\" )' class='adtocart'><i class='fa fa-shopping-cart'></i></button></div><div class='panel-body text-center'><h4><a style='text-decoration: none;' href='product/"+pk+"' class='pro-title'>"+item.name+"</a></h4><p class='price'>"+item.price.toString()+'vnd'+"</p></div></section></div><br>";
+        
+        c = String(item.price).replace(/(.)(?=(\d{3})+$)/g,'$1,');
+        console.log(c);
+        var ele = "<div class='col-md-4'><section class='panel'><div class='pro-img-box'><img src='"+item.image+"' /><button onclick='add_e( "+pk+", \"" + item.name.toString() + "\" )' class='adtocart'><i class='fa fa-shopping-cart'></i></button></div><div class='panel-body text-center'><h4><a style='text-decoration: none;' href='product/"+pk+"' class='pro-title'>"+item.name+"</a></h4><p style='font-size:2em' class='price'>"+c+'đ'+"</p></div></section></div><br>";
         return ele;
     }
     function add_e(id, message){

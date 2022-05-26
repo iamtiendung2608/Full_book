@@ -1,3 +1,4 @@
+import decimal
 from django.shortcuts import render
 
 # Create your views here.
@@ -27,6 +28,7 @@ from collections import defaultdict
 import matplotlib
 matplotlib.use('Agg')
 
+from django.contrib import messages
 
 
 
@@ -39,6 +41,7 @@ def AddBook(request):
         form = BookForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,'Create '+request.POST.get('name')+' success')
             return HttpResponseRedirect('/')
     else:
         form = BookForm()
@@ -55,10 +58,19 @@ def EditBook(request, id = None):
         form = BookForm(request.POST,instance = item)
         if form.is_valid:
             form.save()
+            messages.success(request,'Update '+item.name+' success')
             return HttpResponseRedirect('/')
     else:
         form = BookForm(instance = item)
     return render(request, 'edit.html',{'form':form})
+
+@login_required(login_url='login')
+@allowed_users(allowed_role=['admin'])
+def DeleteBook(request, id = None):
+    item = book.objects.get(id=id).delete()
+    messages.success(request,'Delete '+item.name+' success')
+    return HttpResponseRedirect('/')
+
 
 
 
@@ -83,6 +95,7 @@ def EditTag(request, id = None):
         form = TagForm(request.POST,instance = item)
         if form.is_valid:
             form.save()
+            messages.success(request,'Update '+item.name+' success')
             return HttpResponseRedirect('/')
     else:
         form = TagForm(instance = item)
@@ -92,11 +105,7 @@ def EditTag(request, id = None):
 
 
 #need html to access this function
-@login_required(login_url='login')
-@allowed_users(allowed_role=['admin'])
-def DeleteBook(request, id = None):
-    item = book.objects.get(id=id).delete()
-    return HttpResponseRedirect('/')
+
 
 
 
@@ -105,7 +114,7 @@ def DeleteBook(request, id = None):
 def CheckOut(request):
 
 
-    bills = Bill.objects.filter(is_confirmed = False).count()
+    bills = Bill.objects.filter(is_confirmed = True).count()
     
     #get all purchase
     totals = Bill.objects.all().aggregate(Sum('total'))['total__sum']
@@ -121,11 +130,9 @@ def CheckOut(request):
     for i in x.values_list('book__name', flat=True):
         books.append(book.objects.get(name = i))
         
-    
-
     values, names, quantities = merge_slices(x.values_list('quantity', flat=True), x.values_list('book__Title__fullName', flat=True))
     # print(s)
-    graphic = graphics(values, names)
+    graphic = graphics(values, names, quantities)
     contexts = {
         'bills':bills,
         'totals':int(totals),
@@ -188,18 +195,16 @@ def Scrap(urls):
     return res
 
 
-def graphics(name, value):
+def graphics(name, value, sum):
 
-
-
+    #autopct='%1.0f%%'
+    #autopct=lambda x: '{:.0f}'.format(decimal.Decimal(x)*sum/100)
     plt.title('Trending book title tag')
     plt.ylabel("")
-    pie = plt.pie(name, autopct='%1.0f%%', pctdistance=1.1, labeldistance=1.2, startangle=0)
+    pie = plt.pie(name,autopct='%1.0f%%' , pctdistance=1.1, labeldistance=1.2, startangle=0)
     # plt.legend(loc = 3, labels = value)
     plt.legend(pie[0],value, bbox_to_anchor=(1.03,0.2), loc="center right", fontsize=10, 
            bbox_transform=plt.gcf().transFigure)
-
-
 
     buffer = BytesIO()
     plt.savefig(buffer, format='png')

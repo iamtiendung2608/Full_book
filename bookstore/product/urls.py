@@ -10,5 +10,4 @@ urlpatterns = [
     path('bill/confirm', callEmail,name='assignConfirm'),
     path('bill/details/<int:id>', BillDetails ,name='billDetails'),
     path('tag/<int:id>',TagDetails ,name='tag'),
-    
 ]

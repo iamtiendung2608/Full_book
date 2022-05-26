@@ -1,5 +1,7 @@
 {% load static  %}
 {%load mathfilters%}
+{% load humanize %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -38,6 +40,8 @@
         <!-- Cart Item-->
         {% if not items %}
             <h2>Sorry the cart is empty</h2>
+            <img src = "/images/empty_cart.jpeg">
+            <br>
             <a class="btn btn-success" href="{% url 'home' %}">Continue Shopping</a>
         {% else %}
         {% for item in items %}
@@ -46,7 +50,7 @@
                     <a class="cart-item-product" href="{% url 'details' item.book.id  %}">
                         <div class="cart-item-product-thumb"><img src="{{item.book.image}}" alt="Product"></div>
                         <div class="cart-item-product-info">
-                            <h4 class="cart-item-product-title"> {{item.book.name}}</h4>
+                            <h4 class="cart-item-product-title"> {{item.id}}</h4>
                         </div>
                     </a>
                 </div>
@@ -57,10 +61,10 @@
                     </div>
                 </div>
                 <div class="px-3 my-3 text-center">
-                    <div class="cart-item-label">Subtotal</div><span class="text-xl font-weight-medium"> {{item.book.price}}đ</span>
+                    <div class="cart-item-label">Subtotal</div><span class="text-xl font-weight-medium"> {{item.book.price|intcomma}}đ</span>
                 </div>
                 <div class="px-3 my-3 text-center">
-                    <div class="cart-item-label">Discount</div><span class="text-xl font-weight-medium">{{item.book.price|mul:0.1|floatformat:"0"}}đ</span>
+                    <div class="cart-item-label">Discount</div><span class="text-xl font-weight-medium">{{item.book.price|mul:0.1|floatformat:"0"|intcomma}}đ</span>
                 </div>
             </div>
             {% endfor %}
@@ -68,7 +72,7 @@
             <div class="d-sm-flex justify-content-between align-items-center text-center text-sm-left">
                 <form class="form-inline py-2">
                 </form>
-                <div class="py-2"><span class="d-inline-block align-middle text-sm text-muted font-weight-medium text-uppercase mr-2">Subtotal:</span><span class="d-inline-block align-middle text-xl font-weight-medium"><strong id="strong">{{Sum|floatformat:"0"}}</strong>đ</span></div>
+                <div class="py-2"><span class="d-inline-block align-middle text-sm text-muted font-weight-medium text-uppercase mr-2">Subtotal:</span><span class="d-inline-block align-middle text-xl font-weight-medium"><strong id="strong">{{Sum|floatformat:"0"|intcomma}}</strong>đ</span></div>
             </div>
             <!-- Buttons-->
             <hr class="my-2">
@@ -120,3 +124,7 @@
 </script>
 </body>
 </html>
+{% comment %} 
+    <buton onclick="window.alert('message')" class="btn btn-success">Do Something</button> 
+    <input type="text" name="something" required>
+{% endcomment %}

@@ -48,9 +48,10 @@
                         {{context.price|intcomma}}đ<small style="font-size:0.5em" class="text-success"> (16%off)</small>
                     </h2>
                     {% if request.user.is_authenticated %}
-                             <i class="fa fa-shopping-cart"></i>
+                             
                        <button onclick="add_e({{context.id}} , '{{context.name}}')" class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title="" data-original-title="Add to cart">
-                        </button>
+                        <i class="fa fa-shopping-cart"></i>  
+                      </button>
                     {% endif %}
                     <h3 class="box-title mt-5">Key Highlights</h3>
                     <ul class="list-unstyled">
@@ -82,7 +83,7 @@
             </div>
             <div class="caption">
               <div class="name text-center">
-                <a style="text-decoration: none;" href="{% url 'details' book.id%}">{{book.name  | title}}</a>
+                <a style="text-decoration: none;" href="{% url 'details' book.id%}">{{book.name |lower|capfirst}}</a>
               </div>
               <div class="price">
                 <span> {{book.price|intcomma}}đ</span>
