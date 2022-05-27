@@ -40,7 +40,7 @@
                 <label class="col-sm-3 control-label">Province: </label>
                 <div class="col-sm-9">
                     <input name="{{form.Province.name}}" hidden id="provinceInput" type="text" class="form-control" placeholder="An Giang" >
-                    <select  onblur="Output('ls_province','provinceInput')" id="ls_province"  class ="form-control" name="ls_province"></select>
+                    <select onblur="Output('ls_province','provinceInput')" id="ls_province"  class ="form-control" name="ls_province"></select>
                     <p style="color:red" class="help-block" id="province" ></p>
                 </div>
             </div>
@@ -138,6 +138,4 @@
              textInput.value = actualValue;
           }
         </script>
-
-
 {% endblock content %}

@@ -100,6 +100,7 @@
                             <li><a href="{% url 'checkout' %}"><i class="fa fa-line-chart" aria-hidden="true"></i> Checkout</a>
                             <li><a href="{% url 'adminAdd' %}"><i class="fa fa-plus" aria-hidden="true">  Add Product</i></a>
                             <li><a href="{% url 'Addtag' %}"><i class="fa fa-plus" aria-hidden="true">  Add Tag</i></a>
+                            {% comment %} add button here {% endcomment %}
                         {% else %}
                           <li ><a target="_blank" rel="noopener noreferrer" href="{% url 'profile' %}"><i class="fa fa-user" aria-hidden="true"></i>   {{request.user.username}}</a></li>
                           <li ><a target="_blank" rel="noopener noreferrer" href="account/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i>   cart   {{count}}</a></li>

@@ -101,10 +101,14 @@ def EditTag(request, id = None):
         form = TagForm(instance = item)
     return render(request, 'edit.html',{'form':form})
 
+# @login_required(login_url='login')
+# @allowed_users(allowed_role=['admin'])
+# def DeleteBook(request, id = None):
+#     item = tag.objects.get(id=id).delete()
+#     messages.success(request,'Delete '+item.name+' success')
+#     return HttpResponseRedirect('/')
 
 
-
-#need html to access this function
 
 
 
@@ -197,8 +201,8 @@ def Scrap(urls):
 
 def graphics(name, value, sum):
 
-    #autopct='%1.0f%%'
-    #autopct=lambda x: '{:.0f}'.format(decimal.Decimal(x)*sum/100)
+    #autopct = '%1.0f%%'
+    #autopct = lambda x: '{:.0f}'.format(decimal.Decimal(x)*sum/100)
     plt.title('Trending book title tag')
     plt.ylabel("")
     pie = plt.pie(name,autopct='%1.0f%%' , pctdistance=1.1, labeldistance=1.2, startangle=0)

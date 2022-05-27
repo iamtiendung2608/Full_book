@@ -45,12 +45,12 @@
             <a class="btn btn-success" href="{% url 'home' %}">Continue Shopping</a>
         {% else %}
         {% for item in items %}
-            <div id="{{item.id}}" class="cart-item d-md-flex justify-content-between"><span class="remove-item"><i class="fa fa-times"></i></span>
+            <div id="{{item.id}}" class="cart-item d-md-flex justify-content-between"><span onclick="callAjax({{item.id}}, 0,{{item.book.price}},{{item.id}})" class="remove-item"><i class="fa fa-times"></i></span>
                 <div class="px-3 my-3">
                     <a class="cart-item-product" href="{% url 'details' item.book.id  %}">
                         <div class="cart-item-product-thumb"><img src="{{item.book.image}}" alt="Product"></div>
                         <div class="cart-item-product-info">
-                            <h4 class="cart-item-product-title"> {{item.id}}</h4>
+                            <h4 class="cart-item-product-title"> {{item.book.name}}</h4>
                         </div>
                     </a>
                 </div>
@@ -84,7 +84,7 @@
     </div>
 {% include "baseFooter.html" %}
 <script>
-    function callAjax(link,value,price, id){
+    function callAjax(link, value, price, id){
         if(value == 0){
             var choice = window.confirm('You want to delete this item?')
             if(!choice){
@@ -125,6 +125,7 @@
 </body>
 </html>
 {% comment %} 
-    <buton onclick="window.alert('message')" class="btn btn-success">Do Something</button> 
+    href="{% url '' abc.id %}"
+    <button onclick="window.alert('message')" class="btn btn-success">Do Something</button> 
     <input type="text" name="something" required>
 {% endcomment %}
